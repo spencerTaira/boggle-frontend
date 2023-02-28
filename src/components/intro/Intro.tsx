@@ -1,5 +1,5 @@
 import React from "react";
-
+import CreateGameForm from "./CreateGameForm";
 /**
  * Show Intro page
  *
@@ -9,7 +9,10 @@ import React from "react";
 
 function Intro() {
     return (
-        <p>INTROROROROROR</p>
+        <div className='Intro'>
+            <p>INTROROROROROR</p>
+            <CreateGameForm />
+        </div>
     )
 }
 
