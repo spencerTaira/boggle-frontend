@@ -15,7 +15,7 @@ function Intro() {
             greyOverlay:false
         }
     )
-    
+
     function showCreateGameForm(){
         setShowForm(
             {
@@ -26,7 +26,12 @@ function Intro() {
     }
 
     function showJoinGameForm(){
-
+        setShowForm(
+            {
+                ...showForm,
+                visibleForm:"join"
+            }
+        )
     }
 
     function formCancel(){
@@ -45,11 +50,12 @@ function Intro() {
     if(showForm.visibleForm==="join"){
         form = <JoinGameForm cancel={formCancel}/>
     }
-    
+
     return (
         <div className='Intro'>
             <p>INTROROROROROR</p>
             <button onClick={showCreateGameForm}>Create a new game!</button>
+            <button onClick={showJoinGameForm}>Join a game!</button>
             {form}
         </div>
     )

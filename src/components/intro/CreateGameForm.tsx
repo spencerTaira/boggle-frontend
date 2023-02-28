@@ -1,16 +1,16 @@
-import React, { ReactEventHandler, useState } from "react";
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState } from "react";
 
 /**
  * Render CreateGameForm.
- * 
+ *
  * State: formData
  *  {
- *      roomName,
- *      numPlayers
- *      gameLength
+ *      roomName (string),
+ *      password (string),
+ *      numPlayers (string),
+ *      gameLength (string)
  *  }
- * 
+ *
  * App -> CreateGameForm
  */
 
@@ -18,18 +18,19 @@ function CreateGameForm({cancel}:{cancel:Function}) {
     const [formData, setFormData] = useState(
         {
             roomName: '',
+            password: '',
             numPlayers: '2',
             gameLength: '1'
         }
     );
-    
+
     console.log("what is formData?", formData)
-    
+
     function handleSubmit(e:React.FormEvent){
         e.preventDefault();
-       
+
     }
-    
+
     function handleChange(e:React.ChangeEvent<HTMLInputElement>){
         const {name, value} = e.target;
         setFormData((fData) => ({
@@ -55,6 +56,16 @@ function CreateGameForm({cancel}:{cancel:Function}) {
                                 type="text"
                                 value={formData.roomName}
                                 name="roomName"
+                                onChange={handleChange}
+                                required
+                            />
+                        </label>
+                        <label>
+                            Password
+                            <input
+                                type="text"
+                                value={formData.password}
+                                name="password"
                                 onChange={handleChange}
                                 required
                             />
