@@ -18,14 +18,15 @@ function CreateGameForm() {
     const [formData, setFormData] = useState(
         {
             roomName: '',
-            numPlayers: 2,
-            gameLength: 1
+            numPlayers: '2',
+            gameLength: '1'
         }
     );
     
     console.log("what is formData?", formData)
     
-    function handleSubmit(){
+    function handleSubmit(e:React.FormEvent){
+        e.preventDefault();
        
     }
     
@@ -36,6 +37,7 @@ function CreateGameForm() {
             [name]: value,
          }));
     }
+
     return(
         <div className='CreateGameForm'>
             <label>
@@ -49,15 +51,16 @@ function CreateGameForm() {
                                 value={formData.roomName}
                                 name="roomName"
                                 onChange={handleChange}
+                                required
                             />
                         </label>
                         <label>
                             Number of players
                             <input
                                 type="range"
-                                min="1"
-                                max="10"
-                                step="1"
+                                min='1'
+                                max='10'
+                                step='1'
                                 name="numPlayers"
                                 value={formData.numPlayers}
                                 onChange={handleChange}
@@ -75,8 +78,15 @@ function CreateGameForm() {
                                 value={formData.gameLength}
                                 onChange={handleChange}
                             />
-                            <p>{formData.gameLength}</p>
+                            {
+                                Number(formData.gameLength)%1===0 ?
+                                <p>{formData.gameLength}:00 min.</p>:
+                                <p>{Number(formData.gameLength)-.5}:30 min.</p>
+                            }
                         </label>
+                        <button onSubmit={handleSubmit}>
+                            Create room!
+                        </button>
                     </div>
                 </form>
             </label>
