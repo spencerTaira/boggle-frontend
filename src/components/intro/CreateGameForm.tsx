@@ -14,7 +14,7 @@ import { useNavigate, Link } from 'react-router-dom';
  * App -> CreateGameForm
  */
 
-function CreateGameForm() {
+function CreateGameForm({cancel}:{cancel:Function}) {
     const [formData, setFormData] = useState(
         {
             roomName: '',
@@ -38,12 +38,17 @@ function CreateGameForm() {
          }));
     }
 
+    function cancelForm(){
+        cancel()
+    }
+
     return(
         <div className='CreateGameForm'>
             <label>
                 <p>Create a new game!</p>
                 <form onSubmit={handleSubmit}>
                     <div className='CreateGameForm-roomName'>
+                        <button onClick={cancelForm}>X</button>
                         <label>
                             Room Name
                             <input
