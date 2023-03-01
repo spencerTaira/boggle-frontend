@@ -4,14 +4,15 @@ import BoggleApi from "../../api";
 
 /**
  * Render CreateGameForm.
- * 
+ *
  * State: formData
  *  {
- *      roomName,
- *      numPlayers
- *      gameLength
+ *      roomName (string),
+ *      password (string),
+ *      numPlayers (string),
+ *      gameLength (string)
  *  }
- * 
+ *
  * App -> CreateGameForm
  */
 
@@ -19,6 +20,8 @@ function CreateGameForm({cancel}:{cancel:Function}) {
     const [formData, setFormData] = useState(
         {
             roomName: '',
+            password: '',
+            numPlayers: '2',
             maxPlayers: '2',
             gameLength: '1'
         }
@@ -71,6 +74,16 @@ function CreateGameForm({cancel}:{cancel:Function}) {
                                 type="text"
                                 value={formData.roomName}
                                 name="roomName"
+                                onChange={handleChange}
+                                required
+                            />
+                        </label>
+                        <label>
+                            Password
+                            <input
+                                type="text"
+                                value={formData.password}
+                                name="password"
                                 onChange={handleChange}
                                 required
                             />
