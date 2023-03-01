@@ -1,5 +1,6 @@
 import React, { ReactEventHandler, useState } from "react";
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link} from 'react-router-dom';
+import BoggleApi from "../../api";
 
 /**
  * Render CreateGameForm.
@@ -18,17 +19,32 @@ function CreateGameForm({cancel}:{cancel:Function}) {
     const [formData, setFormData] = useState(
         {
             roomName: '',
-            numPlayers: '2',
+            maxPlayers: '2',
             gameLength: '1'
         }
     );
     
+    const navigate = useNavigate();
     console.log("what is formData?", formData)
     
-    function handleSubmit(e:React.FormEvent){
+
+    
+
+    async function handleSubmit(e:React.FormEvent){
         e.preventDefault();
-       
+        try {
+            const result = await BoggleApi.createRoom(formData);
+            navigate(`/lobby/${result.roomName}`);
+            console.log("success, result is", result);
+         }
+         catch (err) {
+            //console.log("err>>>>>>>>>>>>", err);
+            //setErrors(err.message)
+            console.log(err);
+         }
     }
+       
+    
     
     function handleChange(e:React.ChangeEvent<HTMLInputElement>){
         const {name, value} = e.target;
@@ -66,11 +82,11 @@ function CreateGameForm({cancel}:{cancel:Function}) {
                                 min='1'
                                 max='10'
                                 step='1'
-                                name="numPlayers"
-                                value={formData.numPlayers}
+                                name="maxPlayers"
+                                value={formData.maxPlayers}
                                 onChange={handleChange}
                             />
-                            <p>{formData.numPlayers}</p>
+                            <p>{formData.maxPlayers}</p>
                         </label>
                         <label>
                             Length of Game
