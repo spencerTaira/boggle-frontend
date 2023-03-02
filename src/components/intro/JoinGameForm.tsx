@@ -41,37 +41,35 @@ function JoinGameForm({cancel}:{cancel:Function}) {
 
     return(
         <div className='CreateGameForm'>
-            <label>
-                <p>Create a new game!</p>
-                <form onSubmit={handleSubmit}>
-                    <div className='CreateGameForm-roomName'>
-                        <button onClick={cancelForm}>X</button>
-                        <label>
-                            Room Name
-                            <input
-                                type="text"
-                                value={formData.roomName}
-                                name="roomName"
-                                onChange={handleChange}
-                                required
-                            />
-                        </label>
-                        <label>
-                            Password
-                            <input
-                                type="text"
-                                value={formData.password}
-                                name="password"
-                                onChange={handleChange}
-                                required
-                            />
-                        </label>
-                        <button onSubmit={handleSubmit}>
-                            Join room!
-                        </button>
-                    </div>
-                </form>
-            </label>
+            <p>Join a game!</p>
+            <form onSubmit={handleSubmit}>
+                <div className='CreateGameForm-roomName'>
+                    <button onClick={cancelForm}>X</button>
+                    <label>
+                        Room Name
+                        <input
+                            type="text"
+                            value={formData.roomName}
+                            name="roomName"
+                            onChange={handleChange}
+                            required
+                        />
+                    </label>
+                    <label>
+                        Password
+                        <input
+                            type="text"
+                            value={formData.password}
+                            name="password"
+                            onChange={handleChange}
+                            required
+                        />
+                    </label>
+                    <button onSubmit={handleSubmit}>
+                        Join room!
+                    </button>
+                </div>
+            </form>
         </div>
     )
 }
