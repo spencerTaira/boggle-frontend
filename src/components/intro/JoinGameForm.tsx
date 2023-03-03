@@ -1,5 +1,6 @@
-import React, { useState, } from "react";
-
+import React, { useState } from "react";
+import { useNavigate, Link} from 'react-router-dom';
+import BoggleApi from "../../api";
 /**
  * Render JoinGameForm.
  *
@@ -20,12 +21,25 @@ function JoinGameForm({cancel}:{cancel:Function}) {
         }
     );
 
+    const navigate = useNavigate();
     console.log("what is formData?", formData)
 
-    function handleSubmit(e:React.FormEvent){
+    async function handleSubmit(e:React.FormEvent){
         e.preventDefault();
-
+        console.debug("Entered handle submit");
+        try {
+            const result = await BoggleApi.enterRoom(formData);
+            console.log(result);
+            navigate(`/lobby/${result.roomName}`);
+            console.log("success, result is", result);
+         }
+         catch (err) {
+            //console.log("err>>>>>>>>>>>>", err);
+            //setErrors(err.message)
+            console.log(err);
+         }
     }
+       
 
     function handleChange(e:React.ChangeEvent<HTMLInputElement>){
         const {name, value} = e.target;
@@ -40,10 +54,10 @@ function JoinGameForm({cancel}:{cancel:Function}) {
     }
 
     return(
-        <div className='CreateGameForm'>
+        <div className='JoinGameForm'>
             <p>Join a game!</p>
             <form onSubmit={handleSubmit}>
-                <div className='CreateGameForm-roomName'>
+                <div className='JoinGameForm-roomName'>
                     <button onClick={cancelForm}>X</button>
                     <label>
                         Room Name
