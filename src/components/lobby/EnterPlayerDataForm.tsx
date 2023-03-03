@@ -4,25 +4,25 @@ import BoggleApi from "../../api";
 
 /**
  * Render EnterPlayerDataForm
- * 
+ *
  * State: formData
  *  {
  *      playerName: (string)
  *  }
- * 
+ *
  * App -> Lobby -> EnterPlayerDataForm
  */
 
 function EnterPlayerDataForm({roomId}:{roomId:string}){
     const navigate = useNavigate();
-    
+
     const [formData, setFormData] = useState(
         {
             playerName:'',
             roomName:roomId
         }
     )
-    
+
     console.log("what is Lobby EPDF formData?", formData)
 
     function handleChange(e:React.ChangeEvent<HTMLInputElement>){
@@ -50,7 +50,27 @@ function EnterPlayerDataForm({roomId}:{roomId:string}){
     }
     return (
         <div>
-            LOBYBOBLOFOFLFOBLOBBYLLALLLDF
+            <p>
+                Enter username!
+            </p>
+            <form onSubmit={handleSubmit}>
+                <div className='JoinGameForm-roomName'>
+                    <label>
+                        Username
+                        <input
+                            type="text"
+                            value={formData.playerName}
+                            name="playerName"
+                            onChange={handleChange}
+                            maxLength={50}
+                            required
+                        />
+                    </label>
+                    <button>
+                        Create Name
+                    </button>
+                </div>
+            </form>
         </div>
     )
 
