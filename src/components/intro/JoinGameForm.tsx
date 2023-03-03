@@ -39,7 +39,7 @@ function JoinGameForm({cancel}:{cancel:Function}) {
             console.log(err);
          }
     }
-       
+
 
     function handleChange(e:React.ChangeEvent<HTMLInputElement>){
         const {name, value} = e.target;
@@ -56,9 +56,11 @@ function JoinGameForm({cancel}:{cancel:Function}) {
     return(
         <div className='JoinGameForm'>
             <p>Join a game!</p>
+            <div>
+                <button onClick={cancelForm}>X</button>
+            </div>
             <form onSubmit={handleSubmit}>
                 <div className='JoinGameForm-roomName'>
-                    <button onClick={cancelForm}>X</button>
                     <label>
                         Room Name
                         <input
