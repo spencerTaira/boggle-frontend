@@ -38,7 +38,7 @@ function CreateGameForm({cancel}:{cancel:Function}) {
         try {
             const result = await BoggleApi.createRoom(formData);
             console.log(result);
-            navigate(`/lobby/${result.roomName}`);
+            navigate(`/lobby/${result.roomInfo.roomName}`);
             console.log("success, result is", result);
          }
          catch (err) {

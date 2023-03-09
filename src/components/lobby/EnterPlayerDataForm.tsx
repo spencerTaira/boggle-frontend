@@ -19,7 +19,7 @@ function EnterPlayerDataForm({roomId}:{roomId:string}){
     const [formData, setFormData] = useState(
         {
             playerName:'',
-            roomName:roomId
+            roomId:roomId
         }
     )
 
@@ -37,6 +37,11 @@ function EnterPlayerDataForm({roomId}:{roomId:string}){
         e.preventDefault();
         console.debug("Entered handle submit");
         try {
+            const result = await BoggleApi.joinRoom(formData);
+            // sessionStorage.setItem('playerId', result.playerId);
+            // sessionStorage.setItem('playerName', result.playerName);
+            console.log("result of enter player name",result)
+            sessionStorage.setItem('playerData', JSON.stringify(result.playerData))
             // const result = await BoggleApi.joinRoom(formData);
             // console.log(result);
             // //navigate(`/lobby/${result.roomName}`);
@@ -49,12 +54,12 @@ function EnterPlayerDataForm({roomId}:{roomId:string}){
          }
     }
     return (
-        <div>
+        <div className="EnterPlayerDataForm">
             <p>
                 Enter username!
             </p>
             <form onSubmit={handleSubmit}>
-                <div className='JoinGameForm-roomName'>
+                <div className='EnterPlayerDataForm-form'>
                     <label>
                         Username
                         <input
