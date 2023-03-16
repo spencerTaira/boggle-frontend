@@ -3,6 +3,16 @@ import CreateGameForm from "./CreateGameForm";
 import JoinGameForm from "./JoinGameForm";
 import { socket } from "../../socket";
 
+interface RoomInterface {
+        "room_name": string,
+        "curr_players": number,
+        "max_players": number,
+        "game_length": number,
+        "private": boolean,
+        "password": string,
+        "host": number,
+}
+
 /**
  * Show Intro page
  *
@@ -18,16 +28,40 @@ function Intro() {
         }
     )
 
+    const [rooms, setRooms] = useState<Array<RoomInterface>>(
+        []
+    )
+
+    const [loading, setLoading] = useState(false)
+
+    console.log("What is loading?", loading);
+    console.log("What is intro form?", showForm);
+    console.log("What is rooms?", rooms);
+
+    function updateRooms(msg: any) {
+        console.log(msg);
+        setRooms((prevRooms) => msg);
+        setLoading(true);
+    }
+
     useEffect(() => {
 
-        function onConnect() {
-            console.log('We Connected!!!');
+        function onConnect(msg: string) {
+            console.log(msg);
+            getRooms();
         }
 
+        function getRooms() {
+            socket.emit('intro-get-rooms');
+        }
+
+
         socket.on('connected', onConnect);
+        socket.on('intro-send-rooms', updateRooms);
 
         return () => {
-            socket.off('connected', onConnect)
+            socket.off('connected', onConnect);
+            socket.off('intro-games', updateRooms);
         };
     }, []);
 
@@ -59,11 +93,21 @@ function Intro() {
     }
 
     let form;
+
     if(showForm.visibleForm==="create"){
         form = <CreateGameForm cancel={formCancel}/>
     }
+
     if(showForm.visibleForm==="join"){
         form = <JoinGameForm cancel={formCancel}/>
+    }
+
+    let roomList;
+
+    if (!loading) {
+        roomList = <p>Loading...</p>
+    } else {
+        roomList = rooms.map((room) => <h5>{room.room_name}</h5>)
     }
 
     return (
@@ -72,6 +116,12 @@ function Intro() {
             <button onClick={showCreateGameForm}>Create a new game!</button>
             <button onClick={showJoinGameForm}>Join a game!</button>
             {form}
+            <div className='Intro-room-container'>
+                <h3>
+                    Rooms Available...
+                </h3>
+                {roomList}
+            </div>
         </div>
     )
 }
