@@ -1,6 +1,8 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import CreateGameForm from "./CreateGameForm";
 import JoinGameForm from "./JoinGameForm";
+import { socket } from "../../socket";
+
 /**
  * Show Intro page
  *
@@ -15,6 +17,19 @@ function Intro() {
             greyOverlay:false
         }
     )
+
+    useEffect(() => {
+
+        function onConnect() {
+            console.log('We Connected!!!');
+        }
+
+        socket.on('connected', onConnect);
+
+        return () => {
+            socket.off('connected', onConnect)
+        };
+    }, []);
 
     function showCreateGameForm(){
         setShowForm(
