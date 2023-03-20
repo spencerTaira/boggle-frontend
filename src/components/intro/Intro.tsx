@@ -1,16 +1,16 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import CreateGameForm from "./CreateGameForm";
 import JoinGameForm from "./JoinGameForm";
 import { socket } from "../../socket";
 
 interface RoomInterface {
-        "room_name": string,
-        "curr_players": number,
-        "max_players": number,
-        "game_length": number,
-        "private": boolean,
-        "password": string,
-        "host": number,
+    "room_name": string,
+    "curr_players": number,
+    "max_players": number,
+    "game_length": number,
+    "private": boolean,
+    "password": string,
+    "host": number,
 }
 
 /**
@@ -23,10 +23,12 @@ interface RoomInterface {
 function Intro() {
     const [showForm, setShowForm] = useState(
         {
-            visibleForm:'',
-            greyOverlay:false
+            visibleForm: '',
+            greyOverlay: false
         }
     )
+
+    const [intervalId, setIntervalId] = useState<undefined | NodeJS.Timer>()
 
     const [rooms, setRooms] = useState<Array<RoomInterface>>(
         []
@@ -39,10 +41,12 @@ function Intro() {
     console.log("What is rooms?", rooms);
 
     function updateRooms(msg: any) {
+        console.debug("Entered updateRooms function")
         console.log(msg);
         setRooms((prevRooms) => msg);
-        setLoading(true);
+        setLoading(() => true);
     }
+
 
     useEffect(() => {
 
@@ -55,51 +59,57 @@ function Intro() {
             socket.emit('intro-get-rooms');
         }
 
+        if (intervalId === undefined) {
+            console.debug("Going to set a new interval");
+            let id = setInterval(getRooms, 2000);
+            setIntervalId(id);
+        }
 
         socket.on('connected', onConnect);
         socket.on('intro-send-rooms', updateRooms);
 
         return () => {
             socket.off('connected', onConnect);
-            socket.off('intro-games', updateRooms);
+            socket.off('intro-send-rooms', updateRooms);
+            clearInterval(intervalId)
         };
     }, []);
 
-    function showCreateGameForm(){
+    function showCreateGameForm() {
         setShowForm(
             {
                 ...showForm,
-                visibleForm:"create"
+                visibleForm: "create"
             }
         )
     }
 
-    function showJoinGameForm(){
+    function showJoinGameForm() {
         setShowForm(
             {
                 ...showForm,
-                visibleForm:"join"
+                visibleForm: "join"
             }
         )
     }
 
-    function formCancel(){
+    function formCancel() {
         setShowForm(
             {
                 ...showForm,
-                visibleForm:""
+                visibleForm: ""
             }
         )
     }
 
     let form;
 
-    if(showForm.visibleForm==="create"){
-        form = <CreateGameForm cancel={formCancel}/>
+    if (showForm.visibleForm === "create") {
+        form = <CreateGameForm cancel={formCancel} />
     }
 
-    if(showForm.visibleForm==="join"){
-        form = <JoinGameForm cancel={formCancel}/>
+    if (showForm.visibleForm === "join") {
+        form = <JoinGameForm cancel={formCancel} />
     }
 
     let roomList;
@@ -107,7 +117,7 @@ function Intro() {
     if (!loading) {
         roomList = <p>Loading...</p>
     } else {
-        roomList = rooms.map((room) => <h5>{room.room_name}</h5>)
+        roomList = rooms.map((room) => <h5 key={room.room_name}>{room.room_name} {room.curr_players}/{room.max_players} Players</h5>)
     }
 
     return (
