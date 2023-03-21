@@ -9,7 +9,7 @@ function Lobby() {
     console.log("what is playerData", playerData);
     
     //TODO: add state/effect to handle fully joining a room
-    
+
     if(!playerData.playerId){
         return(
             <div>
@@ -20,7 +20,7 @@ function Lobby() {
     return (
             <div>
                 <p>LOBBBBBY: {id}</p>
-                <p>{playerData.playerId}</p>
+                <p>I am player: {playerData.playerId}</p>
             </div>    
     )
 }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate, Link} from 'react-router-dom';
 import CreateGameForm from "./CreateGameForm";
 import JoinGameForm from "./JoinGameForm";
 import { socket } from "../../socket";
@@ -36,6 +37,8 @@ function Intro() {
 
     const [loading, setLoading] = useState(false)
 
+    const navigate = useNavigate()
+
     console.log("What is loading?", loading);
     console.log("What is intro form?", showForm);
     console.log("What is rooms?", rooms);
@@ -67,6 +70,9 @@ function Intro() {
 
         socket.on('connected', onConnect);
         socket.on('intro-send-rooms', updateRooms);
+
+        //TODO: think about if best place to change
+        sessionStorage.removeItem("playerData")
 
         return () => {
             socket.off('connected', onConnect);
@@ -102,6 +108,10 @@ function Intro() {
         )
     }
 
+    function joinLobby(roomName:string){
+        navigate(`/lobby/${roomName}`);
+    }
+
     let form;
 
     if (showForm.visibleForm === "create") {
@@ -117,7 +127,12 @@ function Intro() {
     if (!loading) {
         roomList = <p>Loading...</p>
     } else {
-        roomList = rooms.map((room) => <h5 key={room.room_name}>{room.room_name} {room.curr_players}/{room.max_players} Players</h5>)
+        roomList = rooms.map((room) => 
+            <div key={room.room_name}>
+                <h5>{room.room_name} {room.curr_players}/{room.max_players} Players</h5>
+                <button onClick={()=>joinLobby(room.room_name)}>Join</button>
+            </div>
+        )
     }
 
     return (
