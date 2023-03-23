@@ -29,8 +29,6 @@ function Intro() {
         }
     )
 
-    const [intervalId, setIntervalId] = useState<undefined | NodeJS.Timer>()
-
     const [lobbys, setLobbys] = useState<Array<LobbyInterface>>(
         []
     )
@@ -62,11 +60,7 @@ function Intro() {
             socket.emit('intro-get-lobbys');
         }
 
-        if (intervalId === undefined) {
-            console.debug("Going to set a new interval");
-            let id = setInterval(getLobbys, 2000);
-            setIntervalId(id);
-        }
+        const intervalId = setInterval(getLobbys, 2000);
 
         socket.on('connected', onConnect);
         socket.on('intro-send-lobbys', updateLobbys);
