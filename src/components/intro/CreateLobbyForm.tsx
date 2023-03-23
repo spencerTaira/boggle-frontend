@@ -3,42 +3,42 @@ import { useNavigate, Link} from 'react-router-dom';
 import BoggleApi from "../../api";
 
 /**
- * Render CreateGameForm.
+ * Render CreateLobbyForm.
  *
  * State: formData
  *  {
- *      roomName (string),
+ *      lobbyName (string),
  *      password (string),
  *      numPlayers (string),
  *      gameLength (string)
  *  }
  *
- * App -> CreateGameForm
+ * App -> CreateLobbyForm
  */
 
-function CreateGameForm({cancel}:{cancel:Function}) {
+function CreateLobbyForm({cancel}:{cancel:Function}) {
     const [formData, setFormData] = useState(
         {
-            roomName: '',
+            lobbyName: '',
             password: '',
             maxPlayers: '2',
             gameLength: '1'
         }
     );
-    
+
     const navigate = useNavigate();
     console.log("what is formData?", formData)
-    
 
-    
+
+
 
     async function handleSubmit(e:React.FormEvent){
         e.preventDefault();
         console.debug("Entered handle submit");
         try {
-            const result = await BoggleApi.createRoom(formData);
+            const result = await BoggleApi.createLobby(formData);
             console.log(result);
-            navigate(`/lobby/${result.roomInfo.roomName}`);
+            navigate(`/lobby/${result.lobbyInfo.lobbyName}`);
             console.log("success, result is", result);
          }
          catch (err) {
@@ -47,9 +47,9 @@ function CreateGameForm({cancel}:{cancel:Function}) {
             console.log(err);
          }
     }
-       
-    
-    
+
+
+
     function handleChange(e:React.ChangeEvent<HTMLInputElement>){
         const {name, value} = e.target;
         setFormData((fData) => ({
@@ -64,18 +64,18 @@ function CreateGameForm({cancel}:{cancel:Function}) {
     }
 
     return(
-        <div className='CreateGameForm'>
-            <p>Create a new game!</p>
+        <div className='CreateLobbyForm'>
+            <p>Create a new lobby!</p>
             <div>
                 <button onClick={cancelForm}>X</button>
             </div>
             <form onSubmit={handleSubmit}>
                 <label>
-                    Room Name
+                    Lobby Name
                     <input
                         type="text"
-                        value={formData.roomName}
-                        name="roomName"
+                        value={formData.lobbyName}
+                        name="lobbyName"
                         onChange={handleChange}
                         required
                     />
@@ -121,7 +121,7 @@ function CreateGameForm({cancel}:{cancel:Function}) {
                     }
                 </label>
                 <button>
-                    Create room!
+                    Create Lobby!
                 </button>
             </form>
 
@@ -129,8 +129,4 @@ function CreateGameForm({cancel}:{cancel:Function}) {
     )
 }
 
-export default CreateGameForm;
-
-//Name of room
-//Number of players
-//Length of game?
+export default CreateLobbyForm;

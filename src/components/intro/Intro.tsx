@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link} from 'react-router-dom';
-import CreateGameForm from "./CreateGameForm";
-import JoinGameForm from "./JoinGameForm";
+import CreateLobbyForm from "./CreateLobbyForm";
+import JoinLobbyForm from "./JoinLobbyForm";
 import { socket } from "../../socket";
 
-interface RoomInterface {
-    "room_name": string,
+interface LobbyInterface {
+    "lobby_name": string,
     "curr_players": number,
     "max_players": number,
     "game_length": number,
@@ -31,7 +31,7 @@ function Intro() {
 
     const [intervalId, setIntervalId] = useState<undefined | NodeJS.Timer>()
 
-    const [rooms, setRooms] = useState<Array<RoomInterface>>(
+    const [lobbys, setLobbys] = useState<Array<LobbyInterface>>(
         []
     )
 
@@ -41,12 +41,12 @@ function Intro() {
 
     console.log("What is loading?", loading);
     console.log("What is intro form?", showForm);
-    console.log("What is rooms?", rooms);
+    console.log("What is lobbys?", lobbys);
 
-    function updateRooms(msg: any) {
-        console.debug("Entered updateRooms function")
+    function updateLobbys(msg: any) {
+        console.debug("Entered updateLobbys function")
         console.log(msg);
-        setRooms((prevRooms) => msg);
+        setLobbys((prevLobbys) => msg);
         setLoading(() => true);
     }
 
@@ -55,33 +55,33 @@ function Intro() {
 
         function onConnect(msg: string) {
             console.log(msg);
-            getRooms();
+            getLobbys();
         }
 
-        function getRooms() {
-            socket.emit('intro-get-rooms');
+        function getLobbys() {
+            socket.emit('intro-get-lobbys');
         }
 
         if (intervalId === undefined) {
             console.debug("Going to set a new interval");
-            let id = setInterval(getRooms, 2000);
+            let id = setInterval(getLobbys, 2000);
             setIntervalId(id);
         }
 
         socket.on('connected', onConnect);
-        socket.on('intro-send-rooms', updateRooms);
+        socket.on('intro-send-lobbys', updateLobbys);
 
         //TODO: think about if best place to change
         sessionStorage.removeItem("playerData")
 
         return () => {
             socket.off('connected', onConnect);
-            socket.off('intro-send-rooms', updateRooms);
+            socket.off('intro-send-lobbys', updateLobbys);
             clearInterval(intervalId)
         };
     }, []);
 
-    function showCreateGameForm() {
+    function showCreateLobbyForm() {
         setShowForm(
             {
                 ...showForm,
@@ -90,7 +90,7 @@ function Intro() {
         )
     }
 
-    function showJoinGameForm() {
+    function showJoinLobbyForm() {
         setShowForm(
             {
                 ...showForm,
@@ -108,44 +108,49 @@ function Intro() {
         )
     }
 
-    function joinLobby(roomName:string){
-        navigate(`/lobby/${roomName}`);
+    function joinLobby(lobbyName:string){
+        navigate(`/lobby/${lobbyName}`);
     }
 
     let form;
 
     if (showForm.visibleForm === "create") {
-        form = <CreateGameForm cancel={formCancel} />
+        form = <CreateLobbyForm cancel={formCancel} />
     }
 
     if (showForm.visibleForm === "join") {
-        form = <JoinGameForm cancel={formCancel} />
+        form = <JoinLobbyForm cancel={formCancel} />
     }
 
-    let roomList;
+    let lobbyList;
 
     if (!loading) {
-        roomList = <p>Loading...</p>
+        lobbyList = <p>Loading...</p>
     } else {
-        roomList = rooms.map((room) => 
-            <div key={room.room_name}>
-                <h5>{room.room_name} {room.curr_players}/{room.max_players} Players</h5>
-                <button onClick={()=>joinLobby(room.room_name)}>Join</button>
-            </div>
-        )
+        if (lobbys.length === 0) {
+            lobbyList = 'There are currently no open lobbies';
+        } else {
+            lobbyList = lobbys.map((lobby) =>
+                <div key={lobby.lobby_name}>
+                    <h5>{lobby.lobby_name} {lobby.curr_players}/{lobby.max_players} Players</h5>
+                    <button onClick={()=>joinLobby(lobby.lobby_name)}>Join</button>
+                </div>
+            )
+        }
     }
 
     return (
         <div className='Intro'>
-            <p>INTROROROROROR</p>
-            <button onClick={showCreateGameForm}>Create a new game!</button>
-            <button onClick={showJoinGameForm}>Join a game!</button>
+            <p>Welcome to Boggle Your Own Brains!</p>
+            <button onClick={showCreateLobbyForm}>Create a new lobby!</button>
+            <button onClick={showJoinLobbyForm}>Join a lobby!</button>
             {form}
-            <div className='Intro-room-container'>
+            <div className='Intro-lobby-container'>
                 <h3>
-                    Rooms Available...
+                    Open Lobbies:
                 </h3>
-                {roomList}
+                {/* TODO: Make lobbyList a component */}
+                {lobbyList}
             </div>
         </div>
     )

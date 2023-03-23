@@ -7,13 +7,13 @@ function Lobby() {
     let playerDataStr:string|undefined = sessionStorage.getItem('playerData') || undefined;
     let playerData = playerDataStr ? JSON.parse(playerDataStr!) : {};
     console.log("what is playerData", playerData);
-    
+
     //TODO: add state/effect to handle fully joining a room
 
     if(!playerData.playerId){
         return(
             <div>
-                <EnterPlayerDataForm roomId={id!}/>
+                <EnterPlayerDataForm lobbyId={id!}/>
             </div>
         )
     }
@@ -21,7 +21,7 @@ function Lobby() {
             <div>
                 <p>LOBBBBBY: {id}</p>
                 <p>I am player: {playerData.playerId}</p>
-            </div>    
+            </div>
     )
 }
 

@@ -2,21 +2,21 @@ import React, { useState } from "react";
 import { useNavigate, Link} from 'react-router-dom';
 import BoggleApi from "../../api";
 /**
- * Render JoinGameForm.
+ * Render JoinLobbyForm.
  *
  * State: formData
  *  {
- *      roomName (string),
+ *      lobbyName (string),
  *      password (string)
  *  }
  *
- * App -> JoinGameForm
+ * App -> JoinLobbyForm
  */
 
-function JoinGameForm({cancel}:{cancel:Function}) {
+function JoinLobbyForm({cancel}:{cancel:Function}) {
     const [formData, setFormData] = useState(
         {
-            roomName: '',
+            lobbyName: '',
             password: '',
         }
     );
@@ -28,9 +28,9 @@ function JoinGameForm({cancel}:{cancel:Function}) {
         e.preventDefault();
         console.debug("Entered handle submit");
         try {
-            const result = await BoggleApi.enterRoom(formData);
+            const result = await BoggleApi.enterLobby(formData);
             console.log(result);
-            navigate(`/lobby/${result.roomName}`);
+            navigate(`/lobby/${result.lobbyName}`);
             console.log("success, result is", result);
          }
          catch (err) {
@@ -54,19 +54,19 @@ function JoinGameForm({cancel}:{cancel:Function}) {
     }
 
     return(
-        <div className='JoinGameForm'>
-            <p>Join a game!</p>
+        <div className='JoinLobbyForm'>
+            <p>Join a lobby!</p>
             <div>
                 <button onClick={cancelForm}>X</button>
             </div>
             <form onSubmit={handleSubmit}>
-                <div className='JoinGameForm-roomName'>
+                <div className='JoinLobbyForm-lobbyName'>
                     <label>
-                        Room Name
+                        Lobby Name
                         <input
                             type="text"
-                            value={formData.roomName}
-                            name="roomName"
+                            value={formData.lobbyName}
+                            name="lobbyName"
                             onChange={handleChange}
                             required
                         />
@@ -82,7 +82,7 @@ function JoinGameForm({cancel}:{cancel:Function}) {
                         />
                     </label>
                     <button onSubmit={handleSubmit}>
-                        Join room!
+                        Join lobby!
                     </button>
                 </div>
             </form>
@@ -90,4 +90,4 @@ function JoinGameForm({cancel}:{cancel:Function}) {
     )
 }
 
-export default JoinGameForm;
+export default JoinLobbyForm;

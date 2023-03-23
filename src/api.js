@@ -4,45 +4,45 @@ const BASE_API_URL = "http://localhost:5000";
 
 class BoggleApi {
 
-   static async createRoom(roomData){
-      //console.log("what is roomData", roomData);
+   static async createLobby(lobbyData){
+      //console.log("what is lobbyData", lobbyData);
       try{
-         const result = await axios.post(`${BASE_API_URL}/room/create`, roomData);
+         const result = await axios.post(`${BASE_API_URL}/lobby/create`, lobbyData);
          return result.data;
       } catch (e) {
          console.log(e);
-         const err = new Error("Unable to create room");
+         const err = new Error("Unable to create lobby");
          err.status = 400;
          throw err;
       }
    }
 
-   static async enterRoom(roomData){
-      console.log("what is roomData", roomData);
+   static async enterLobby(lobbyData){
+      console.log("what is lobbyData", lobbyData);
       try{
          const result = await axios(
             {
                method: "get",
-               url: `${BASE_API_URL}/room/enter`,
-               params: roomData
+               url: `${BASE_API_URL}/lobby/enter`,
+               params: lobbyData
             }
          )
          return result.data;
       } catch (e) {
          console.log(e);
-         const err = new Error("Unable to enter room");
+         const err = new Error("Unable to enter lobby");
          err.status = 400;
          throw err;
       }
    }
 
-   static async joinRoom(playerData){
-      console.log("BOGGLE API JOIN ROOM playerDATA", playerData);
+   static async joinLobby(playerData){
+      console.log("BOGGLE API JOIN Lobby playerDATA", playerData);
       try{
          const result = await axios (
             {
                method: "post",
-               url: `${BASE_API_URL}/room/join`,
+               url: `${BASE_API_URL}/lobby/join`,
                data: playerData
             }
          )
@@ -50,7 +50,7 @@ class BoggleApi {
          return result.data;
       } catch (e) {
          console.log(e);
-         const err = new Error("Unable to join room");
+         const err = new Error("Unable to join lobby");
          err.status = 400;
          throw err;
       }

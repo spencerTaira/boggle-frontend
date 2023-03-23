@@ -13,13 +13,13 @@ import BoggleApi from "../../api";
  * App -> Lobby -> EnterPlayerDataForm
  */
 
-function EnterPlayerDataForm({roomId}:{roomId:string}){
+function EnterPlayerDataForm({lobbyId}:{lobbyId:string}){
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState(
         {
             playerName:'',
-            roomId:roomId
+            lobbyId:lobbyId
         }
     )
 
@@ -37,14 +37,14 @@ function EnterPlayerDataForm({roomId}:{roomId:string}){
         e.preventDefault();
         console.debug("Entered handle submit");
         try {
-            const result = await BoggleApi.joinRoom(formData);
+            const result = await BoggleApi.joinLobby(formData);
             // sessionStorage.setItem('playerId', result.playerId);
             // sessionStorage.setItem('playerName', result.playerName);
             console.log("result of enter player name",result)
             sessionStorage.setItem('playerData', JSON.stringify(result.playerData))
-            // const result = await BoggleApi.joinRoom(formData);
+            // const result = await BoggleApi.joinLobby(formData);
             // console.log(result);
-            // //navigate(`/lobby/${result.roomName}`);
+            // //navigate(`/lobby/${result.lobbyName}`);
             //console.log("success, result is", result);
          }
          catch (err) {
