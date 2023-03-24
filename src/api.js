@@ -4,6 +4,27 @@ const BASE_API_URL = "http://localhost:5000";
 
 class BoggleApi {
 
+   static async checkLobby(lobbyId) {
+      try {
+         const result = await axios(
+            {
+               method: "get",
+               url: `${BASE_API_URL}/lobby`,
+               params: lobbyId
+            }
+         )
+         return result.data;
+      } catch (e) {
+         console.log('THIS IS A ERROR CHECK');
+         console.log(e);
+
+         return {
+            error: e.response.data.error,
+            status: e.response.status
+         }
+      }
+   }
+
    static async createLobby(lobbyData){
       //console.log("what is lobbyData", lobbyData);
       try{

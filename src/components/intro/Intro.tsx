@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, Link} from 'react-router-dom';
+import { useNavigate, useLocation, Link} from 'react-router-dom';
 import CreateLobbyForm from "./CreateLobbyForm";
 import JoinLobbyForm from "./JoinLobbyForm";
 import { socket } from "../../socket";
@@ -36,6 +36,11 @@ function Intro() {
     const [loading, setLoading] = useState(false)
 
     const navigate = useNavigate()
+    const location = useLocation();
+
+    // able to access information that was sent along with the navigate from the prior location
+    const errorMessage = location.state?.error;
+    console.log('errorMessage', errorMessage);
 
     console.log("What is loading?", loading);
     console.log("What is intro form?", showForm);
@@ -136,6 +141,9 @@ function Intro() {
     return (
         <div className='Intro'>
             <p>Welcome to Boggle Your Own Brains!</p>
+            <h3>
+                {errorMessage}
+            </h3>
             <button onClick={showCreateLobbyForm}>Create a new lobby!</button>
             <button onClick={showJoinLobbyForm}>Join a lobby!</button>
             {form}
