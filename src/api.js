@@ -15,7 +15,7 @@ class BoggleApi {
          )
          return result.data;
       } catch (e) {
-         console.log('THIS IS A ERROR CHECK');
+         console.log('Check lobby error');
          console.log(e);
 
          return {
@@ -25,9 +25,9 @@ class BoggleApi {
       }
    }
 
-   static async createLobby(lobbyData){
+   static async createLobby(lobbyData) {
       //console.log("what is lobbyData", lobbyData);
-      try{
+      try {
          const result = await axios.post(`${BASE_API_URL}/lobby/create`, lobbyData);
          return result.data;
       } catch (e) {
@@ -38,9 +38,9 @@ class BoggleApi {
       }
    }
 
-   static async enterLobby(lobbyData){
+   static async enterLobby(lobbyData) {
       console.log("what is lobbyData", lobbyData);
-      try{
+      try {
          const result = await axios(
             {
                method: "get",
@@ -57,10 +57,10 @@ class BoggleApi {
       }
    }
 
-   static async joinLobby(playerData){
+   static async joinLobby(playerData) {
       console.log("BOGGLE API JOIN Lobby playerDATA", playerData);
-      try{
-         const result = await axios (
+      try {
+         const result = await axios(
             {
                method: "post",
                url: `${BASE_API_URL}/lobby/join`,
@@ -74,6 +74,24 @@ class BoggleApi {
          const err = new Error("Unable to join lobby");
          err.status = 400;
          throw err;
+      }
+   }
+
+   static async getPlayerData(playerId) {
+      try {
+         const result = await axios(
+            {
+               method: "get",
+               url: `${BASE_API_URL}/player`,
+               params: { playerId: playerId }
+            }
+         )
+         return result.data
+      } catch (e) {
+         return {
+            error: e.response.data.error,
+            status: e.response.status
+         }
       }
    }
 }

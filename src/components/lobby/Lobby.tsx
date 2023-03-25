@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import EnterPlayerDataForm from "./EnterPlayerDataForm";
 import { useParams, useNavigate } from "react-router-dom";
 import BoggleAPI from "../../api";
+import userContext from "../../userContext";
 
 function Lobby() {
     const {id} = useParams<{id: string}>();
-    let playerDataStr:string|undefined = sessionStorage.getItem('playerData') || undefined;
-    let playerData = playerDataStr ? JSON.parse(playerDataStr!) : {};
+    //let playerDataStr:string|undefined = sessionStorage.getItem('playerData') || undefined;
+    //let playerData = playerDataStr ? JSON.parse(playerDataStr!) : {};
+
+    const { playerData } = useContext(userContext);
+    // playerData upon entering first time will be 'null'
 
     const navigate = useNavigate();
     console.log("what is playerData", playerData);
@@ -27,10 +31,10 @@ function Lobby() {
                 )
             }
         }
-
         checkLobby();
     });
 
+    
     //TODO: add state/effect to handle fully joining a room
 
     if(!playerData.playerId){
