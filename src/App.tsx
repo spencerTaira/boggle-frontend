@@ -6,23 +6,49 @@ import Intro from "./components/intro/Intro";
 import Lobby from "./components/lobby/Lobby";
 import Game from "./components/game/Game";
 import userContext from './userContext';
+import BoggleApi from './api';
+
+/**
+ * Render App
+ * 
+ * State: none
+ * Props: none
+ * 
+ * App -> Intro
+ */
 
 function App() {
-
+  console.debug("Entered app component");
+  
   const playerId = localStorage.getItem("playerId")
-
-  const [playerData, setPlayerData] = useState({});
   
-  useEffect(() => {
-    async function getPlayerData
-  });
+  let sessionPlayerData = sessionStorage.getItem("playerData")
+  if(sessionPlayerData !== null){
+    sessionPlayerData = JSON.parse(sessionPlayerData)
+  }
   
-  //check if there is existing player data in local storage
-  //if so, make api call for user data, and then set state for playerData
-  //and pass that context down
+  const [playerData, setPlayerData] = useState(sessionPlayerData || {});
+  
+  console.log("App: What is sessionPlayerData", sessionPlayerData);
+  console.debug("App: what is playerData?", playerData);
+  console.debug("App: what is playerId", playerId);
 
-  //if no data exists, do nothing, run as is
-
+  useEffect(function getPlayerDataOnMount() {
+    async function getPlayerData(){
+      if(playerId !== null && sessionPlayerData === null){
+        console.debug("Looking for exisiting player data");
+        
+        const result = await BoggleApi.getPlayerData(playerId);
+        if(result.error !== undefined){
+          //deal with error
+        }else{
+          setPlayerData(()=>({...playerData, ...result.playerData}))
+          sessionStorage.setItem("playerData", JSON.stringify(result.playerData))
+        }
+      }
+    }
+    getPlayerData();
+  }, []);
 
   return (
     <userContext.Provider value={playerData}>
@@ -43,4 +69,10 @@ function App() {
 
 export default App;
 
-// playerId: '1'
+/*
+Thoughts/planning
+
+player id stored to recall saved name
+keep room info in session storage (roomId/pw)
+
+*/

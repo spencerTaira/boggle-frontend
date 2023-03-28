@@ -10,7 +10,7 @@ import BoggleApi from "../../api";
  *      password (string)
  *  }
  *
- * App -> JoinLobbyForm
+ * App -> JoinLobbyForm -> Lobby
  */
 
 function JoinLobbyForm({cancel}:{cancel:Function}) {

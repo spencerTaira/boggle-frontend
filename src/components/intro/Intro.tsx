@@ -15,13 +15,23 @@ interface LobbyInterface {
 }
 
 /**
- * Show Intro page
+ * Render Intro Component
+ * 
+ * State: 
+ *      lobbys: [] of existing lobbies
+ *      loading: boolean
  *
  * Props:
- * -
+ *      None
+ * 
+ * App -> Intro -> CreateLobbyForm
+ *              -> JoinLobbyForm
+ *
  */
 
 function Intro() {
+    console.debug("Entered Intro component")
+    
     const [showForm, setShowForm] = useState(
         {
             visibleForm: '',
@@ -71,7 +81,7 @@ function Intro() {
         socket.on('intro-send-lobbys', updateLobbys);
 
         //TODO: think about if best place to change
-        sessionStorage.removeItem("playerData")
+        // sessionStorage.removeItem("playerData")
 
         return () => {
             socket.off('connected', onConnect);

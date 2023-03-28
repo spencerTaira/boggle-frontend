@@ -9,11 +9,11 @@ function Lobby() {
     //let playerDataStr:string|undefined = sessionStorage.getItem('playerData') || undefined;
     //let playerData = playerDataStr ? JSON.parse(playerDataStr!) : {};
 
-    const { playerData } = useContext(userContext);
+    const playerData = useContext(userContext);
     // playerData upon entering first time will be 'null'
 
     const navigate = useNavigate();
-    console.log("what is playerData", playerData);
+    console.log("what is playerData in Lobby Component", playerData);
 
     useEffect(() => {
         async function checkLobby() {

@@ -12,11 +12,16 @@ import BoggleApi from "../../api";
  *      numPlayers (string),
  *      gameLength (string)
  *  }
+ * 
+ * Props:
+ *      cancel: callback function to close form
  *
- * App -> CreateLobbyForm
+ * App -> CreateLobbyForm -> Lobby
  */
 
 function CreateLobbyForm({cancel}:{cancel:Function}) {
+    console.debug("Entered CreateLobbyForm");
+
     const [formData, setFormData] = useState(
         {
             lobbyName: '',
@@ -28,9 +33,6 @@ function CreateLobbyForm({cancel}:{cancel:Function}) {
 
     const navigate = useNavigate();
     console.log("what is formData?", formData)
-
-
-
 
     async function handleSubmit(e:React.FormEvent){
         e.preventDefault();
@@ -47,8 +49,6 @@ function CreateLobbyForm({cancel}:{cancel:Function}) {
             console.log(err);
          }
     }
-
-
 
     function handleChange(e:React.ChangeEvent<HTMLInputElement>){
         const {name, value} = e.target;

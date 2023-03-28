@@ -39,7 +39,8 @@ function EnterPlayerDataForm({ lobbyId }: { lobbyId: string }) {
         console.debug("Entered handle submit");
         try {
             const result = await BoggleApi.joinLobby(formData);
-            sessionStorage.setItem('playerData', JSON.stringify(result.playerData))
+            sessionStorage.setItem('playerData', JSON.stringify(result.playerData));
+            localStorage.setItem('playerId', result.playerData.playerId);
         }
         catch (err) {
             console.log(err);
