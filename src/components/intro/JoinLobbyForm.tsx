@@ -20,24 +20,21 @@ function JoinLobbyForm({cancel}:{cancel:Function}) {
             password: '',
         }
     );
-
+    const [errorMessages, setErrorMessages] = useState<Array<string>>([]);
     const navigate = useNavigate();
     console.log("what is formData?", formData)
 
     async function handleSubmit(e:React.FormEvent){
         e.preventDefault();
         console.debug("Entered handle submit");
-        try {
-            const result = await BoggleApi.enterLobby(formData);
+            const result = await BoggleApi.authenticateLobbyCredentials(formData);
             console.log(result);
-            navigate(`/lobby/${result.lobbyName}`);
-            console.log("success, result is", result);
-         }
-         catch (err) {
-            //console.log("err>>>>>>>>>>>>", err);
-            //setErrors(err.message)
-            console.log(err);
-         }
+            if(result.error){
+                setErrorMessages(()=>[result.error])
+            }else{
+                navigate(`/lobby/${result.authentication.lobbyName}`);
+            }
+         
     }
 
 
@@ -56,6 +53,9 @@ function JoinLobbyForm({cancel}:{cancel:Function}) {
     return(
         <div className='JoinLobbyForm'>
             <p>Join a lobby!</p>
+            <div>
+                {errorMessages.map((msg, i)=><h1 key={i}>{msg}</h1>)}
+            </div>
             <div>
                 <button onClick={cancelForm}>X</button>
             </div>

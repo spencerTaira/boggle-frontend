@@ -6,11 +6,20 @@ import userContext from "../../userContext";
 
 function Lobby() {
     const {id} = useParams<{id: string}>();
-    //let playerDataStr:string|undefined = sessionStorage.getItem('playerData') || undefined;
-    //let playerData = playerDataStr ? JSON.parse(playerDataStr!) : {};
 
     const playerData = useContext(userContext);
     // playerData upon entering first time will be 'null'
+
+    const [lobbyData, setLobbyData] = useState(
+        {
+            "curr_players": 0,
+            "game_length": 0,
+            "host": null,
+            "lobby_name": "",
+            "max_players": 0,
+            "private": true
+        }
+    )
 
     const navigate = useNavigate();
     console.log("what is playerData in Lobby Component", playerData);
@@ -30,9 +39,23 @@ function Lobby() {
                     }
                 )
             }
+
+            if(result.lobbyData.curr_players >= result.lobbyData.max_players){
+                navigate(
+                    '/',
+                    {
+                        state: {
+                            error: `Lobby ${id} full. Sorry :-(`
+                        }
+                    }
+                )
+            }
+            
+            
+            setLobbyData((prevData)=>({...lobbyData, ...result.lobbyData}))
         }
         checkLobby();
-    });
+    }, []);
 
     
     //TODO: add state/effect to handle fully joining a room

@@ -38,27 +38,28 @@ class BoggleApi {
       }
    }
 
-   static async enterLobby(lobbyData) {
+   static async authenticateLobbyCredentials(lobbyData) {
       console.log("what is lobbyData", lobbyData);
       try {
          const result = await axios(
             {
                method: "get",
-               url: `${BASE_API_URL}/lobby/enter`,
+               url: `${BASE_API_URL}/lobby/validate`,
                params: lobbyData
             }
          )
          return result.data;
       } catch (e) {
          console.log(e);
-         const err = new Error("Unable to enter lobby");
-         err.status = 400;
-         throw err;
+         return {
+            error: e.response.data.error,
+            status: e.response.status
+         }
       }
    }
 
    static async joinLobby(playerData) {
-      console.log("BOGGLE API JOIN Lobby playerDATA", playerData);
+      console.debug("BOGGLE API JOIN Lobby playerDATA", playerData);
       try {
          const result = await axios(
             {
