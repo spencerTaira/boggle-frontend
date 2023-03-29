@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, Link} from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import BoggleApi from "../../api";
 /**
  * Render JoinLobbyForm.
@@ -13,7 +13,7 @@ import BoggleApi from "../../api";
  * App -> JoinLobbyForm -> Lobby
  */
 
-function JoinLobbyForm({cancel}:{cancel:Function}) {
+function JoinLobbyForm({ cancel }: { cancel: Function }) {
     const [formData, setFormData] = useState(
         {
             lobbyName: '',
@@ -24,37 +24,40 @@ function JoinLobbyForm({cancel}:{cancel:Function}) {
     const navigate = useNavigate();
     console.log("what is formData?", formData)
 
-    async function handleSubmit(e:React.FormEvent){
+    async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         console.debug("Entered handle submit");
-            const result = await BoggleApi.authenticateLobbyCredentials(formData);
-            console.log(result);
-            if(result.error){
-                setErrorMessages(()=>[result.error])
-            }else{
-                navigate(`/lobby/${result.authentication.lobbyName}`);
-            }
-         
+        const result = await BoggleApi.authenticateLobbyCredentials(formData);
+        console.log(result);
+        if (result.error) {
+            setErrorMessages(() => [result.error])
+        } else {
+            // sessionStorage.setItem(
+            //     "currentLobby", result.authentication.lobbyName
+            // );
+            navigate(`/lobby/${result.authentication.lobbyName}`);
+        }
+
     }
 
 
-    function handleChange(e:React.ChangeEvent<HTMLInputElement>){
-        const {name, value} = e.target;
+    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+        const { name, value } = e.target;
         setFormData((fData) => ({
             ...fData,
             [name]: value,
-         }));
+        }));
     }
 
-    function cancelForm(){
+    function cancelForm() {
         cancel()
     }
 
-    return(
+    return (
         <div className='JoinLobbyForm'>
             <p>Join a lobby!</p>
             <div>
-                {errorMessages.map((msg, i)=><h1 key={i}>{msg}</h1>)}
+                {errorMessages.map((msg, i) => <h4 style={{ "color": "red" }} key={i}>{msg}</h4>)}
             </div>
             <div>
                 <button onClick={cancelForm}>X</button>
