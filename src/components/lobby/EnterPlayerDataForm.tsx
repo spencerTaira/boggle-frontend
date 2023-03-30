@@ -36,15 +36,22 @@ function EnterPlayerDataForm({ lobbyId }: { lobbyId: string }) {
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-        console.debug("Entered handle submit");
-        try {
-            const result = await BoggleApi.joinLobby(formData);
-            sessionStorage.setItem('playerData', JSON.stringify(result.playerData));
-            localStorage.setItem('playerId', result.playerData.playerId);
+        console.debug("EPDF Entered handle submit");
+        const result = await BoggleApi.joinLobby(formData);
+
+        if (result.error) {
+            navigate(
+                '/',
+                {
+                    state: {
+                        error: result.error
+                    }
+                }
+            );
         }
-        catch (err) {
-            console.log(err);
-        }
+
+
+        updatePlayerData(result.playerData);
     }
 
     return (
