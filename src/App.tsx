@@ -8,27 +8,33 @@ import Game from "./components/game/Game";
 import userContext from './userContext';
 import BoggleApi from './api';
 
+interface PlayerDataInterface {
+  playerId: number,
+  playerName: string,
+  currLobbyId: string
+}
+
 /**
  * Render App
- * 
+ *
  * State: none
  * Props: none
- * 
+ *
  * App -> Intro
  */
 
 function App() {
   console.debug("Entered app component");
-  
+
   const playerId = localStorage.getItem("playerId")
-  
+
   let sessionPlayerData = sessionStorage.getItem("playerData")
   if(sessionPlayerData !== null){
     sessionPlayerData = JSON.parse(sessionPlayerData)
   }
-  
+
   const [playerData, setPlayerData] = useState(sessionPlayerData || {});
-  
+
   console.log("App: What is sessionPlayerData", sessionPlayerData);
   console.debug("App: what is playerData?", playerData);
   console.debug("App: what is playerId", playerId);
@@ -37,7 +43,7 @@ function App() {
     async function getPlayerData(){
       if(playerId !== null && sessionPlayerData === null){
         console.debug("Looking for exisiting player data");
-        
+
         const result = await BoggleApi.getPlayerData(playerId);
         if(result.error !== undefined){
           //deal with error
@@ -48,10 +54,17 @@ function App() {
       }
     }
     getPlayerData();
-  }, []);
+  }, [playerId]);
+
+
+  function updatePlayerData(updatedPlayerData: PlayerDataInterface) {
+    sessionStorage.setItem('playerData', JSON.stringify(updatedPlayerData));
+    localStorage.setItem('playerId', String(updatedPlayerData.playerId));
+    setPlayerData(() => updatedPlayerData);
+  }
 
   return (
-    <userContext.Provider value={playerData}>
+    <userContext.Provider value={{playerData, updatePlayerData}}>
       <div className="App">
         <BrowserRouter>
           <Nav />
