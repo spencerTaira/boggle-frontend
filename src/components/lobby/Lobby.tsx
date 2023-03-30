@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useMemo } from "react";
 import EnterPlayerDataForm from "./EnterPlayerDataForm";
 import { useParams, useNavigate } from "react-router-dom";
 import BoggleAPI from "../../api";
 import userContext from "../../userContext";
 
 function Lobby() {
+    console.debug('Entered Lobby');
     const {id} = useParams<{id: string}>();
 
-    const playerData = useContext(userContext);
+    const { playerData } = useContext(userContext);
     // playerData upon entering first time will be 'null'
 
     const [lobbyData, setLobbyData] = useState(
@@ -23,8 +24,9 @@ function Lobby() {
 
     const navigate = useNavigate();
     console.log("what is playerData in Lobby Component", playerData);
-
+    console.log('What is lobby data?', lobbyData);
     useEffect(() => {
+        console.debug('Lobby UseEffect')
         async function checkLobby() {
             const result = await BoggleAPI.checkLobby({lobbyName: id});
 
@@ -50,15 +52,13 @@ function Lobby() {
                     }
                 )
             }
-            
-            
-            setLobbyData((prevData)=>({...lobbyData, ...result.lobbyData}))
-        }
-        checkLobby();
-    }, []);
 
-    
-    //TODO: add state/effect to handle fully joining a room
+
+            setLobbyData(()=>result.lobbyData)
+        }
+
+        checkLobby();
+    }, [id, navigate]);
 
     if(!playerData.playerId){
         return(
