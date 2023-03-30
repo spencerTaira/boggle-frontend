@@ -72,9 +72,10 @@ class BoggleApi {
          return result.data;
       } catch (e) {
          console.log(e);
-         const err = new Error("Unable to join lobby");
-         err.status = 400;
-         throw err;
+         return {
+            error: e.response.data.error,
+            status: e.response.status
+         }
       }
    }
 
