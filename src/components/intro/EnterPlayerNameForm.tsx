@@ -1,30 +1,28 @@
 import React, { useState, useContext } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import BoggleApi from "../../api";
 import userContext from "../../userContext";
 
 /**
- * Render EnterPlayerDataForm
+ * Render EnterPlayerNameForm
  *
  * State: formData
  *  {
  *      playerName: (string)
  *  }
  *
- * App -> Lobby -> EnterPlayerDataForm
+ * App -> Lobby -> EnterPlayerNameForm
  */
 
-function EnterPlayerDataForm({ lobbyId }: { lobbyId: string }) {
-    const navigate = useNavigate();
+function EnterPlayerNameForm() {
+    console.debug("EnterPlayerNameForm");
+
     const { updatePlayerData } = useContext(userContext)
     const [formData, setFormData] = useState(
         {
             playerName: '',
-            lobbyId: lobbyId
         }
     )
-
-    console.log("what is Lobby EPDF formData?", formData)
+    const [error, setError] = useState('');
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         const { name, value } = e.target;
@@ -37,30 +35,26 @@ function EnterPlayerDataForm({ lobbyId }: { lobbyId: string }) {
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         console.debug("EPDF Entered handle submit");
-        const result = await BoggleApi.joinLobby(formData);
+        const result = await BoggleApi.createPlayer(formData);
 
         if (result.error) {
-            navigate(
-                '/',
-                {
-                    state: {
-                        error: result.error
-                    }
-                }
-            );
+            setError(result.error)
+        } else {
+            updatePlayerData(result.playerData);
         }
 
-
-        updatePlayerData(result.playerData);
     }
 
     return (
-        <div className="EnterPlayerDataForm">
+        <div className="EnterPlayerNameForm">
             <p>
                 Enter username!
             </p>
+            <div>
+                <h4 style={{ "color": "red" }}>{error}</h4>
+            </div>
             <form onSubmit={handleSubmit}>
-                <div className='EnterPlayerDataForm-form'>
+                <div className='EnterPlayerNameForm-form'>
                     <label>
                         Username
                         <input
@@ -82,4 +76,4 @@ function EnterPlayerDataForm({ lobbyId }: { lobbyId: string }) {
 
 }
 
-export default EnterPlayerDataForm;
+export default EnterPlayerNameForm;

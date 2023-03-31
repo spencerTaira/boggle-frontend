@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation, Link} from 'react-router-dom';
 import CreateLobbyForm from "./CreateLobbyForm";
 import JoinLobbyForm from "./JoinLobbyForm";
+import EnterPlayerNameForm from "./EnterPlayerNameForm";
 import { socket } from "../../socket";
+import userContext from "../../userContext";
 
 interface LobbyInterface {
     "lobby_name": string,
@@ -16,14 +18,14 @@ interface LobbyInterface {
 
 /**
  * Render Intro Component
- * 
- * State: 
+ *
+ * State:
  *      lobbys: [] of existing lobbies
  *      loading: boolean
  *
  * Props:
  *      None
- * 
+ *
  * App -> Intro -> CreateLobbyForm
  *              -> JoinLobbyForm
  *
@@ -31,7 +33,16 @@ interface LobbyInterface {
 
 function Intro() {
     console.debug("Entered Intro component")
-    
+
+    const { playerData } = useContext(userContext);
+
+
+
+
+
+
+
+
     const [showForm, setShowForm] = useState(
         {
             visibleForm: '',
@@ -146,6 +157,12 @@ function Intro() {
                 </div>
             )
         }
+    }
+
+    if (!playerData.playerName) {
+        return (
+            <EnterPlayerNameForm />
+        )
     }
 
     return (

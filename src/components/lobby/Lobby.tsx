@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext, useMemo } from "react";
-import EnterPlayerDataForm from "./EnterPlayerDataForm";
 import { useParams, useNavigate } from "react-router-dom";
 import BoggleAPI from "../../api";
 import userContext from "../../userContext";
@@ -9,7 +8,6 @@ function Lobby() {
     const {id} = useParams<{id: string}>();
 
     const { playerData } = useContext(userContext);
-    // playerData upon entering first time will be 'null'
 
     const [lobbyData, setLobbyData] = useState(
         {
@@ -60,13 +58,14 @@ function Lobby() {
         checkLobby();
     }, [id, navigate]);
 
-    if(!playerData.playerId){
-        return(
-            <div>
-                <EnterPlayerDataForm lobbyId={id!}/>
-            </div>
-        )
-    }
+    // if(!playerData.playerId){
+    //     return(
+    //         <div>
+    //             <EnterPlayerNameForm lobbyId={id!}/>
+    //         </div>
+    //     )
+    // }
+
     return (
             <div>
                 <p>LOBBBBBY: {id}</p>

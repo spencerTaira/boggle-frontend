@@ -33,6 +33,11 @@ function App() {
     sessionPlayerData = JSON.parse(sessionPlayerData)
   }
 
+  // playerData: {
+        //     playerId: 1,
+        //     playerName: 'testPlayer',
+        // }
+
   const [playerData, setPlayerData] = useState(sessionPlayerData || {});
 
   console.log("App: What is sessionPlayerData", sessionPlayerData);
@@ -48,8 +53,8 @@ function App() {
         if(result.error !== undefined){
           //deal with error
         }else{
-          setPlayerData(()=>({...playerData, ...result.playerData}))
-          sessionStorage.setItem("playerData", JSON.stringify(result.playerData))
+          setPlayerData(()=> result.playerData);
+          sessionStorage.setItem("playerData", JSON.stringify(result.playerData));
         }
       }
     }

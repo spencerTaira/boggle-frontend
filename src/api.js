@@ -96,6 +96,26 @@ class BoggleApi {
          }
       }
    }
+
+   static async createPlayer(playerName) {
+      try {
+         const result = await axios(
+            {
+               method: "post",
+               url: `${BASE_API_URL}/player`,
+               data: playerName
+            }
+         )
+
+         return result.data;
+      } catch (e) {
+         console.log(e);
+         return {
+            error: e.response.data.error,
+            status: e.response.status
+         }
+      }
+   }
 }
 
 export default BoggleApi;
