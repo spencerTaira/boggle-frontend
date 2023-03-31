@@ -98,17 +98,20 @@ class BoggleApi {
    }
 
    static async createPlayer(playerName) {
+      console.debug("Entered BoggleAcreatePlayer")
       try {
+         console.log("createPlayer what is playerName", playerName)
          const result = await axios(
             {
                method: "post",
                url: `${BASE_API_URL}/player`,
-               data: playerName
+               data: {...playerName}
             }
          )
-
+         console.log("What is result of createPlayer", result)
          return result.data;
       } catch (e) {
+         console.debug("Create player error")
          console.log(e);
          return {
             error: e.response.data.error,

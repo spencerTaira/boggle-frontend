@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useNavigate, useLocation, Link} from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import CreateLobbyForm from "./CreateLobbyForm";
 import JoinLobbyForm from "./JoinLobbyForm";
 import EnterPlayerNameForm from "./EnterPlayerNameForm";
@@ -128,19 +128,13 @@ function Intro() {
         )
     }
 
-    function joinLobby(lobbyName:string){
+    function joinLobby(lobbyName: string) {
         navigate(`/lobby/${lobbyName}`);
     }
 
     let form;
 
-    if (showForm.visibleForm === "create") {
-        form = <CreateLobbyForm cancel={formCancel} />
-    }
 
-    if (showForm.visibleForm === "join") {
-        form = <JoinLobbyForm cancel={formCancel} />
-    }
 
     let lobbyList;
 
@@ -153,7 +147,7 @@ function Intro() {
             lobbyList = lobbys.map((lobby) =>
                 <div key={lobby.lobby_name}>
                     <h5>{lobby.lobby_name} {lobby.curr_players}/{lobby.max_players} Players</h5>
-                    <button onClick={()=>joinLobby(lobby.lobby_name)}>Join</button>
+                    <button onClick={() => joinLobby(lobby.lobby_name)}>Join</button>
                 </div>
             )
         }
@@ -161,9 +155,20 @@ function Intro() {
 
     if (!playerData.playerName) {
         return (
+            <div>
             <EnterPlayerNameForm />
+            </div>
         )
     }
+
+    if (showForm.visibleForm === "create") {
+        form = <CreateLobbyForm cancel={formCancel} />
+    }
+
+    if (showForm.visibleForm === "join") {
+        form = <JoinLobbyForm cancel={formCancel} />
+    }
+
 
     return (
         <div className='Intro'>

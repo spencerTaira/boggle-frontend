@@ -36,7 +36,7 @@ function EnterPlayerNameForm() {
         e.preventDefault();
         console.debug("EPDF Entered handle submit");
         const result = await BoggleApi.createPlayer(formData);
-
+        console.log("Did we get here???????????")
         if (result.error) {
             setError(result.error)
         } else {
@@ -48,7 +48,7 @@ function EnterPlayerNameForm() {
     return (
         <div className="EnterPlayerNameForm">
             <p>
-                Enter username!
+                Enter name!
             </p>
             <div>
                 <h4 style={{ "color": "red" }}>{error}</h4>
@@ -56,7 +56,7 @@ function EnterPlayerNameForm() {
             <form onSubmit={handleSubmit}>
                 <div className='EnterPlayerNameForm-form'>
                     <label>
-                        Username
+                        Name:
                         <input
                             type="text"
                             value={formData.playerName}
