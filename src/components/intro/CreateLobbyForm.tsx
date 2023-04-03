@@ -1,5 +1,5 @@
 import React, { ReactEventHandler, useState } from "react";
-import { useNavigate, Link} from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import BoggleApi from "../../api";
 
 /**
@@ -12,7 +12,7 @@ import BoggleApi from "../../api";
  *      numPlayers (string),
  *      gameLength (string)
  *  }
- * 
+ *
  * Props:
  *      cancel: callback function to close form
  *
@@ -30,24 +30,20 @@ function CreateLobbyForm({cancel}:{cancel:Function}) {
             gameLength: '1'
         }
     );
-
+    const [errorMessages, setErrorMessages] = useState<Array<string>>([]);
     const navigate = useNavigate();
+
     console.log("what is formData?", formData)
 
     async function handleSubmit(e:React.FormEvent){
         e.preventDefault();
-        console.debug("Entered handle submit");
-        try {
-            const result = await BoggleApi.createLobby(formData);
-            console.log(result);
+        const result = await BoggleApi.createLobby(formData);
+
+        if (result.error) {
+            setErrorMessages(() => [result.error]);
+        } else {
             navigate(`/lobby/${result.lobbyInfo.lobbyName}`);
-            console.log("success, result is", result);
-         }
-         catch (err) {
-            //console.log("err>>>>>>>>>>>>", err);
-            //setErrors(err.message)
-            console.log(err);
-         }
+        }
     }
 
     function handleChange(e:React.ChangeEvent<HTMLInputElement>){
@@ -59,7 +55,6 @@ function CreateLobbyForm({cancel}:{cancel:Function}) {
     }
 
     function cancelForm(){
-        console.log("form cancelled");
         cancel()
     }
 
@@ -68,6 +63,9 @@ function CreateLobbyForm({cancel}:{cancel:Function}) {
             <p>Create a new lobby!</p>
             <div>
                 <button onClick={cancelForm}>X</button>
+            </div>
+            <div>
+                {errorMessages.map((msg, i) => <h4 style= {{ "color": "red" }} key={i}>{msg}</h4>)}
             </div>
             <form onSubmit={handleSubmit}>
                 <label>
@@ -124,7 +122,6 @@ function CreateLobbyForm({cancel}:{cancel:Function}) {
                     Create Lobby!
                 </button>
             </form>
-
         </div>
     )
 }
