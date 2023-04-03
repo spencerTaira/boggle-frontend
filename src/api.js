@@ -13,11 +13,9 @@ class BoggleApi {
                params: lobbyId
             }
          )
+
          return result.data;
       } catch (e) {
-         console.log('Check lobby error');
-         console.log(e);
-
          return {
             error: e.response.data.error,
             status: e.response.status
@@ -26,20 +24,25 @@ class BoggleApi {
    }
 
    static async createLobby(lobbyData) {
-      //console.log("what is lobbyData", lobbyData);
       try {
-         const result = await axios.post(`${BASE_API_URL}/lobby/create`, lobbyData);
+         const result = await axios(
+            {
+               method: "post",
+               url: `${BASE_API_URL}/lobby/create`,
+               data: lobbyData
+            }
+         )
+
          return result.data;
       } catch (e) {
-         console.log(e);
-         const err = new Error("Unable to create lobby");
-         err.status = 400;
-         throw err;
+         return {
+            error: e.response.data.error,
+            status: e.response.status
+         }
       }
    }
 
    static async authenticateLobbyCredentials(lobbyData) {
-      console.log("what is lobbyData", lobbyData);
       try {
          const result = await axios(
             {
@@ -48,9 +51,9 @@ class BoggleApi {
                params: lobbyData
             }
          )
+
          return result.data;
       } catch (e) {
-         console.log(e);
          return {
             error: e.response.data.error,
             status: e.response.status
@@ -59,7 +62,6 @@ class BoggleApi {
    }
 
    static async joinLobby(playerData) {
-      console.debug("BOGGLE API JOIN Lobby playerDATA", playerData);
       try {
          const result = await axios(
             {
@@ -71,7 +73,6 @@ class BoggleApi {
 
          return result.data;
       } catch (e) {
-         console.log(e);
          return {
             error: e.response.data.error,
             status: e.response.status
@@ -88,6 +89,7 @@ class BoggleApi {
                params: { playerId: playerId }
             }
          )
+
          return result.data
       } catch (e) {
          return {
@@ -98,9 +100,7 @@ class BoggleApi {
    }
 
    static async createPlayer(playerName) {
-      console.debug("Entered BoggleAcreatePlayer")
       try {
-         console.log("createPlayer what is playerName", playerName)
          const result = await axios(
             {
                method: "post",
@@ -108,11 +108,9 @@ class BoggleApi {
                data: {...playerName}
             }
          )
-         console.log("What is result of createPlayer", result)
+
          return result.data;
       } catch (e) {
-         console.debug("Create player error")
-         console.log(e);
          return {
             error: e.response.data.error,
             status: e.response.status
