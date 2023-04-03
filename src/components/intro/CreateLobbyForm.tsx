@@ -1,6 +1,7 @@
-import React, { ReactEventHandler, useState } from "react";
+import React, { ReactEventHandler, useState, useContext } from "react";
 import { useNavigate, Link } from 'react-router-dom';
 import BoggleApi from "../../api";
+import userContext from "../../userContext";
 
 /**
  * Render CreateLobbyForm.
@@ -22,6 +23,7 @@ import BoggleApi from "../../api";
 function CreateLobbyForm({cancel}:{cancel:Function}) {
     console.debug("Entered CreateLobbyForm");
 
+    const { updatePlayerData } = useContext(userContext);
     const [formData, setFormData] = useState(
         {
             lobbyName: '',
@@ -42,6 +44,9 @@ function CreateLobbyForm({cancel}:{cancel:Function}) {
         if (result.error) {
             setErrorMessages(() => [result.error]);
         } else {
+            updatePlayerData({
+                "currLobby": result.lobbyInfo.lobbyName
+            });
             navigate(`/lobby/${result.lobbyInfo.lobbyName}`);
         }
     }

@@ -11,7 +11,7 @@ import BoggleApi from './api';
 interface PlayerDataInterface {
   playerId: number,
   playerName: string,
-  currLobbyId: string
+  currLobby: string
 }
 
 /**
@@ -36,6 +36,7 @@ function App() {
   // playerData: {
         //     playerId: 1,
         //     playerName: 'testPlayer',
+        //     lobbyName: 'test lobby'
         // }
 
   const [playerData, setPlayerData] = useState(sessionPlayerData || {});
@@ -61,13 +62,17 @@ function App() {
 
 
   function updatePlayerData(updatedPlayerData: PlayerDataInterface) {
-    sessionStorage.setItem('playerData', JSON.stringify(updatedPlayerData));
-    localStorage.setItem('playerId', String(updatedPlayerData.playerId));
-    setPlayerData(() => updatedPlayerData);
+    let newPlayerData = {...playerData, ...updatedPlayerData};
+    sessionStorage.setItem('playerData', JSON.stringify(newPlayerData));
+    setPlayerData(() => newPlayerData);
+  }
+
+  function setPlayerId(playerId: string) {
+    localStorage.setItem('playerId', String(playerId));
   }
 
   return (
-    <userContext.Provider value={{playerData, updatePlayerData}}>
+    <userContext.Provider value={{playerData, updatePlayerData, setPlayerId}}>
       <div className="App">
         <BrowserRouter>
           <Nav />

@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate, Link } from 'react-router-dom';
 import BoggleApi from "../../api";
+import userContext from "../../userContext";
+
 /**
  * Render JoinLobbyForm.
  *
@@ -14,6 +16,7 @@ import BoggleApi from "../../api";
  */
 
 function JoinLobbyForm({ cancel }: { cancel: Function }) {
+    const { updatePlayerData } = useContext(userContext);
     const [formData, setFormData] = useState(
         {
             lobbyName: '',
@@ -32,9 +35,11 @@ function JoinLobbyForm({ cancel }: { cancel: Function }) {
         if (result.error) {
             setErrorMessages(() => [result.error])
         } else {
+            updatePlayerData({
+                currLobby: result.authentication.lobbyName
+            });
             navigate(`/lobby/${result.authentication.lobbyName}`);
         }
-
     }
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {

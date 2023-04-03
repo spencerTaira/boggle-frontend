@@ -16,7 +16,7 @@ import userContext from "../../userContext";
 function EnterPlayerNameForm() {
     console.debug("EnterPlayerNameForm");
 
-    const { updatePlayerData } = useContext(userContext)
+    const { updatePlayerData, setPlayerId } = useContext(userContext)
     const [formData, setFormData] = useState(
         {
             playerName: '',
@@ -39,6 +39,7 @@ function EnterPlayerNameForm() {
             setError(result.error)
         } else {
             updatePlayerData(result.playerData);
+            setPlayerId(result.playerData.playerId);
         }
 
     }
