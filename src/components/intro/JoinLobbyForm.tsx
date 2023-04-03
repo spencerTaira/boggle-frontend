@@ -22,24 +22,20 @@ function JoinLobbyForm({ cancel }: { cancel: Function }) {
     );
     const [errorMessages, setErrorMessages] = useState<Array<string>>([]);
     const navigate = useNavigate();
+
     console.log("what is formData?", formData)
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-        console.debug("Entered handle submit");
         const result = await BoggleApi.authenticateLobbyCredentials(formData);
-        console.log(result);
+
         if (result.error) {
             setErrorMessages(() => [result.error])
         } else {
-            // sessionStorage.setItem(
-            //     "currentLobby", result.authentication.lobbyName
-            // );
             navigate(`/lobby/${result.authentication.lobbyName}`);
         }
 
     }
-
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         const { name, value } = e.target;
