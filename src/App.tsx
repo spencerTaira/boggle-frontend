@@ -40,18 +40,16 @@ function App() {
 
   const [playerData, setPlayerData] = useState(sessionPlayerData || {});
 
-  console.log("App: What is sessionPlayerData", sessionPlayerData);
   console.debug("App: what is playerData?", playerData);
   console.debug("App: what is playerId", playerId);
 
   useEffect(function getPlayerDataOnMount() {
     async function getPlayerData(){
       if(playerId !== null && sessionPlayerData === null){
-        console.debug("Looking for exisiting player data");
 
         const result = await BoggleApi.getPlayerData(playerId);
         if(result.error !== undefined){
-          //deal with error
+          //TODO: Add error handling
         }else{
           setPlayerData(()=> result.playerData);
           sessionStorage.setItem("playerData", JSON.stringify(result.playerData));
@@ -59,7 +57,7 @@ function App() {
       }
     }
     getPlayerData();
-  }, [playerId]);
+  }, [playerId, sessionPlayerData]);
 
 
   function updatePlayerData(updatedPlayerData: PlayerDataInterface) {

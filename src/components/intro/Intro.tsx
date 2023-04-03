@@ -35,50 +35,35 @@ function Intro() {
     console.debug("Entered Intro component")
 
     const { playerData } = useContext(userContext);
-
-
-
-
-
-
-
-
     const [showForm, setShowForm] = useState(
         {
             visibleForm: '',
             greyOverlay: false
         }
     )
-
     const [lobbys, setLobbys] = useState<Array<LobbyInterface>>(
         []
     )
-
     const [loading, setLoading] = useState(false)
-
     const navigate = useNavigate()
     const location = useLocation();
 
     // able to access information that was sent along with the navigate from the prior location
     const errorMessage = location.state?.error;
+
     console.log('errorMessage', errorMessage);
+    // console.log("What is loading?", loading);
+    // console.log("What is intro form?", showForm);
+    // console.log("What is lobbys?", lobbys);
 
-    console.log("What is loading?", loading);
-    console.log("What is intro form?", showForm);
-    console.log("What is lobbys?", lobbys);
-
-    function updateLobbys(msg: any) {
-        console.debug("Entered updateLobbys function")
-        console.log(msg);
-        setLobbys((prevLobbys) => msg);
+    function updateLobbys(lobbysData: any) {
+        setLobbys(() => lobbysData);
         setLoading(() => true);
     }
 
 
     useEffect(() => {
-
         function onConnect(msg: string) {
-            console.log(msg);
             getLobbys();
         }
 
@@ -90,9 +75,6 @@ function Intro() {
 
         socket.on('connected', onConnect);
         socket.on('intro-send-lobbys', updateLobbys);
-
-        //TODO: think about if best place to change
-        // sessionStorage.removeItem("playerData")
 
         return () => {
             socket.off('connected', onConnect);
@@ -132,12 +114,7 @@ function Intro() {
         navigate(`/lobby/${lobbyName}`);
     }
 
-    let form;
-
-
-
     let lobbyList;
-
     if (!loading) {
         lobbyList = <p>Loading...</p>
     } else {
@@ -156,11 +133,12 @@ function Intro() {
     if (!playerData.playerName) {
         return (
             <div>
-            <EnterPlayerNameForm />
+                <EnterPlayerNameForm />
             </div>
         )
     }
 
+    let form;
     if (showForm.visibleForm === "create") {
         form = <CreateLobbyForm cancel={formCancel} />
     }

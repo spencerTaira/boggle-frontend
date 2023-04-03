@@ -5,10 +5,9 @@ import userContext from "../../userContext";
 
 function Lobby() {
     console.debug('Entered Lobby');
+
     const {id} = useParams<{id: string}>();
-
     const { playerData } = useContext(userContext);
-
     const [lobbyData, setLobbyData] = useState(
         {
             "curr_players": 0,
@@ -19,12 +18,12 @@ function Lobby() {
             "private": true
         }
     )
-
     const navigate = useNavigate();
+
     console.log("what is playerData in Lobby Component", playerData);
     console.log('What is lobby data?', lobbyData);
+
     useEffect(() => {
-        console.debug('Lobby UseEffect')
         async function checkLobby() {
             const result = await BoggleAPI.checkLobby({lobbyName: id});
 
@@ -51,25 +50,16 @@ function Lobby() {
                 )
             }
 
-
             setLobbyData(()=>result.lobbyData)
         }
 
         checkLobby();
     }, [id, navigate]);
 
-    // if(!playerData.playerId){
-    //     return(
-    //         <div>
-    //             <EnterPlayerNameForm lobbyId={id!}/>
-    //         </div>
-    //     )
-    // }
-
     return (
             <div>
                 <p>LOBBBBBY: {id}</p>
-                <p>I am player: {playerData.playerId}</p>
+                <p>I am player: {playerData.playerName}</p>
             </div>
     )
 }

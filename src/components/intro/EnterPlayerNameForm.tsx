@@ -34,9 +34,7 @@ function EnterPlayerNameForm() {
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-        console.debug("EPDF Entered handle submit");
         const result = await BoggleApi.createPlayer(formData);
-        console.log("Did we get here???????????")
         if (result.error) {
             setError(result.error)
         } else {
@@ -73,7 +71,6 @@ function EnterPlayerNameForm() {
             </form>
         </div>
     )
-
 }
 
 export default EnterPlayerNameForm;
