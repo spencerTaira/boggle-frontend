@@ -23,6 +23,7 @@ function Lobby() {
     console.log("what is playerData in Lobby Component", playerData);
     console.log('What is lobby data?', lobbyData);
 
+    //TODO: Figure out where to add lobby verification with playerData in or out of useEffect???
     useEffect(() => {
         async function checkLobby() {
             const result = await BoggleAPI.checkLobby({lobbyName: id});
