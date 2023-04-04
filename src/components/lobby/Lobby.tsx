@@ -2,12 +2,13 @@ import React, { useState, useEffect, useContext, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import BoggleAPI from "../../api";
 import userContext from "../../userContext";
+import EnterPasswordForm from "./EnterPasswordForm";
 
 function Lobby() {
     console.debug('Entered Lobby');
 
-    const {id} = useParams<{id: string}>();
-    const { playerData } = useContext(userContext);
+    const { id } = useParams<{ id: string }>();
+    const { playerData} = useContext(userContext);
     const [lobbyData, setLobbyData] = useState(
         {
             "curr_players": 0,
@@ -26,7 +27,7 @@ function Lobby() {
     //TODO: Figure out where to add lobby verification with playerData in or out of useEffect???
     useEffect(() => {
         async function checkLobby() {
-            const result = await BoggleAPI.checkLobby({lobbyName: id});
+            const result = await BoggleAPI.checkLobby({ lobbyName: id });
 
             if (result.error) {
                 // able to send information along with navigate and access at the final destination
@@ -40,7 +41,7 @@ function Lobby() {
                 )
             }
 
-            if(result.lobbyData.curr_players >= result.lobbyData.max_players){
+            if (result.lobbyData.curr_players >= result.lobbyData.max_players) {
                 navigate(
                     '/',
                     {
@@ -51,17 +52,24 @@ function Lobby() {
                 )
             }
 
-            setLobbyData(()=>result.lobbyData)
+            setLobbyData(() => result.lobbyData)
         }
 
         checkLobby();
     }, [id, navigate]);
 
     return (
+        <div>
+            {playerData.currLobby !== id 
+            ?
+            <EnterPasswordForm id={id}/> 
+            :
             <div>
-                <p>LOBBBBBY: {id}</p>
-                <p>I am player: {playerData.playerName}</p>
+            <p>LOBBBBBY: {id}</p>
+            <p>I am player: {playerData.playerName}</p>
             </div>
+            }
+        </div>
     )
 }
 
