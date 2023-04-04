@@ -23,7 +23,7 @@ import userContext from "../../userContext";
 function CreateLobbyForm({cancel}:{cancel:Function}) {
     console.debug("Entered CreateLobbyForm");
 
-    const { updatePlayerData } = useContext(userContext);
+    const {playerData, updatePlayerData } = useContext(userContext);
     const [formData, setFormData] = useState(
         {
             lobbyName: '',
@@ -39,15 +39,15 @@ function CreateLobbyForm({cancel}:{cancel:Function}) {
 
     async function handleSubmit(e:React.FormEvent){
         e.preventDefault();
-        const result = await BoggleApi.createLobby(formData);
+        const result = await BoggleApi.createLobby(formData, playerData.playerId);
 
         if (result.error) {
             setErrorMessages(() => [result.error]);
         } else {
             updatePlayerData({
-                "currLobby": result.lobbyInfo.lobbyName
+                "currLobby": result.lobbyName
             });
-            navigate(`/lobby/${result.lobbyInfo.lobbyName}`);
+            navigate(`/lobby/${result.lobbyName}`);
         }
     }
 

@@ -16,7 +16,7 @@ import userContext from "../../userContext";
  */
 
 function JoinLobbyForm({ cancel }: { cancel: Function }) {
-    const { updatePlayerData } = useContext(userContext);
+    const {playerData, updatePlayerData } = useContext(userContext);
     const [formData, setFormData] = useState(
         {
             lobbyName: '',
@@ -30,7 +30,7 @@ function JoinLobbyForm({ cancel }: { cancel: Function }) {
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-        const result = await BoggleApi.authenticateLobbyCredentials(formData);
+        const result = await BoggleApi.authenticateAndJoinLobby(formData, playerData.playerId);
 
         if (result.error) {
             setErrorMessages(() => [result.error])
