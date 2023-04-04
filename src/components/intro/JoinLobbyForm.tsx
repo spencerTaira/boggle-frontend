@@ -36,9 +36,9 @@ function JoinLobbyForm({ cancel }: { cancel: Function }) {
             setErrorMessages(() => [result.error])
         } else {
             updatePlayerData({
-                currLobby: result.authentication.lobbyName
+                currLobby: result.lobbyName
             });
-            navigate(`/lobby/${result.authentication.lobbyName}`);
+            navigate(`/lobby/${result.lobbyName}`);
         }
     }
 

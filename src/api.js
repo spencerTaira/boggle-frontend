@@ -24,7 +24,7 @@ class BoggleApi {
    }
 
    static async createLobby(lobbyData, playerId) {
-      data = {...lobbyData, playerId}
+      const data = {...lobbyData, playerId}
       
       try {
          const result = await axios(
@@ -45,7 +45,7 @@ class BoggleApi {
    }
 
    static async authenticateAndJoinLobby(lobbyData, playerId) {
-      data = {...lobbyData, playerId}
+      const data = {...lobbyData, playerId}
       
       try {
          const result = await axios(

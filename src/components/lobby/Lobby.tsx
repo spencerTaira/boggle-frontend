@@ -62,7 +62,7 @@ function Lobby() {
         <div>
             {playerData.currLobby !== id 
             ?
-            <EnterPasswordForm id={id}/> 
+            <EnterPasswordForm id={id!}/> 
             :
             <div>
             <p>LOBBBBBY: {id}</p>
@@ -74,3 +74,6 @@ function Lobby() {
 }
 
 export default Lobby;
+
+//TODO: increment/decrement players in room, 
+//TODO: join room in database upon entering
