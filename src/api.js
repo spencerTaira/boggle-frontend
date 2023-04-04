@@ -23,13 +23,15 @@ class BoggleApi {
       }
    }
 
-   static async createLobby(lobbyData) {
+   static async createLobby(lobbyData, playerId) {
+      data = {...lobbyData, playerId}
+      
       try {
          const result = await axios(
             {
                method: "post",
                url: `${BASE_API_URL}/lobby/create`,
-               data: lobbyData
+               data: data
             }
          )
 
@@ -42,13 +44,15 @@ class BoggleApi {
       }
    }
 
-   static async authenticateLobbyCredentials(lobbyData) {
+   static async authenticateAndJoinLobby(lobbyData, playerId) {
+      data = {...lobbyData, playerId}
+      
       try {
          const result = await axios(
             {
-               method: "get",
-               url: `${BASE_API_URL}/lobby/validate`,
-               params: lobbyData
+               method: "post",
+               url: `${BASE_API_URL}/lobby/join`,
+               data: data
             }
          )
 
