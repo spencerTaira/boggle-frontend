@@ -60,9 +60,9 @@ function Lobby() {
 
     return (
         <div>
-            {playerData.currLobby !== id 
+            {playerData.currLobby !== id
             ?
-            <EnterPasswordForm id={id!}/> 
+            <EnterPasswordForm id={id!}/>
             :
             <div>
             <p>LOBBBBBY: {id}</p>
@@ -75,9 +75,9 @@ function Lobby() {
 
 export default Lobby;
 
-//TODO: increment/decrement players in room (you can be here, but are you in the room?) 
+//TODO: increment/decrement players in room (you can be here, but are you in the room?)
 //TODO: join room in database upon entering
-//TODO: are we happy with our table schemas??
+//TODO: Figure out when to update last active for player model
 //TODO: figure out what websockets will handle for data
 //TODO: change host if existing host leaves, or close room if no players
 //TODO: simple chat box to test specific room data
