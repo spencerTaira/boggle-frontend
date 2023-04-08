@@ -54,7 +54,7 @@ function Intro() {
     console.log('errorMessage', errorMessage);
     // console.log("What is loading?", loading);
     // console.log("What is intro form?", showForm);
-    // console.log("What is lobbys?", lobbys);
+    console.log("What is lobbys?", lobbys);
 
     function updateLobbys(lobbysData: any) {
         console.log('Lobby Data', lobbysData);
@@ -124,7 +124,7 @@ function Intro() {
         } else {
             lobbyList = lobbys.map((lobby) =>
                 <div key={lobby.lobby_name}>
-                    <h5>{lobby.lobby_name} {lobby.curr_players}/{lobby.max_players} Players</h5>
+                    <h5>{lobby.lobby_name} {lobby.curr_players||0}/{lobby.max_players} Players</h5>
                     <button onClick={() => joinLobby(lobby.lobby_name)}>Join</button>
                 </div>
             )
