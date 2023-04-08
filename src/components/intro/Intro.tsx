@@ -10,10 +10,10 @@ interface LobbyInterface {
     "lobby_name": string,
     "curr_players": number,
     "max_players": number,
-    "game_length": number,
-    "private": boolean,
-    "password": string,
-    "host": number,
+    // "game_length": number,
+    // "private": boolean,
+    // "password": string,
+    // "host": number,
 }
 
 /**
@@ -57,6 +57,7 @@ function Intro() {
     // console.log("What is lobbys?", lobbys);
 
     function updateLobbys(lobbysData: any) {
+        console.log('Lobby Data', lobbysData);
         setLobbys(() => lobbysData);
         setLoading(() => true);
     }
