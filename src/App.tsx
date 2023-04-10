@@ -14,6 +14,11 @@ interface PlayerDataInterface {
   currLobby: string
 }
 
+interface PlayerMessageInterface {
+  playerName: string,
+  message: string
+}
+
 /**
  * Render App
  *
@@ -29,30 +34,25 @@ function App() {
   const playerId = localStorage.getItem("playerId")
 
   let sessionPlayerData = sessionStorage.getItem("playerData")
-  if(sessionPlayerData !== null){
+  if (sessionPlayerData !== null) {
     sessionPlayerData = JSON.parse(sessionPlayerData)
   }
 
-  // playerData: {
-        //     playerId: 1,
-        //     playerName: 'testPlayer',
-        //     lobbyName: 'test lobby'
-        // }
-
   const [playerData, setPlayerData] = useState(sessionPlayerData || {});
+  const [playerMessages, setPlayerMessages] = useState<Array<PlayerMessageInterface>>([])
 
   console.debug("App: what is playerData?", playerData);
   console.debug("App: what is playerId", playerId);
 
   useEffect(function getPlayerDataOnMount() {
-    async function getPlayerData(){
-      if(playerId !== null && sessionPlayerData === null){
+    async function getPlayerData() {
+      if (playerId !== null && sessionPlayerData === null) {
 
         const result = await BoggleApi.getPlayerData(playerId);
-        if(result.error !== undefined){
+        if (result.error !== undefined) {
           //TODO: Add error handling
-        }else{
-          setPlayerData(()=> result.playerData);
+        } else {
+          setPlayerData(() => result.playerData);
           sessionStorage.setItem("playerData", JSON.stringify(result.playerData));
         }
       }
@@ -62,7 +62,7 @@ function App() {
 
 
   function updatePlayerData(updatedPlayerData: PlayerDataInterface) {
-    let newPlayerData = {...playerData, ...updatedPlayerData};
+    let newPlayerData = { ...playerData, ...updatedPlayerData };
     sessionStorage.setItem('playerData', JSON.stringify(newPlayerData));
     setPlayerData(() => newPlayerData);
   }
@@ -71,8 +71,20 @@ function App() {
     localStorage.setItem('playerId', String(playerId));
   }
 
+  function appendMessages(newMessage: PlayerMessageInterface) {
+    setPlayerMessages((prevMessages) => ([...prevMessages, newMessage]))
+  }
+
   return (
-    <userContext.Provider value={{playerData, updatePlayerData, setPlayerId}}>
+    <userContext.Provider value={
+      { 
+        playerData, 
+        playerMessages, 
+        updatePlayerData, 
+        setPlayerId,
+        appendMessages
+      }
+    }>
       <div className="App">
         <BrowserRouter>
           <Nav />
