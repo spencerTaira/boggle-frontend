@@ -28,6 +28,7 @@ function Lobby() {
 
     //TODO: Figure out where to add lobby verification with playerData in or out of useEffect???
     useEffect(() => {
+        console.log('Lobby Use Effect Running');
         async function checkLobby() {
             const result = await BoggleAPI.checkLobby({ lobbyName: id });
 
@@ -58,25 +59,33 @@ function Lobby() {
         }
 
         checkLobby();
-        
-        socket.on('connected', onConnect);
-        function onConnect(msg: string) {
-            console.log("Message received", msg);
+
+        if (playerData.currLobby === id) {
             socket.emit("joining", playerData)
         }
-        
-        socket.on('joined', handleJoined)
+
+
+        // function onConnect(msg: string) {
+        //     console.log("Message received", msg);
+        //     socket.emit("joining", playerData)
+        // }
+
         function handleJoined(msg:Record<string, string>){
-            console.log("Did we join?",msg)
+            appendMessages(msg);
         }
 
+        // socket.on('connected', onConnect);
+        socket.on('joined', handleJoined)
+
+
         return () => {
-            socket.off('connected', onConnect);
+            // socket.off('connected', onConnect);
+            socket.off('joined', handleJoined);
         };
         //Who is in lobby display (info)
         //Websocket ask for other player data
         //Announce entrance into room
-    }, [id, navigate]);
+    }, [id, navigate, playerData]);
 
     return (
         <div>
@@ -87,7 +96,7 @@ function Lobby() {
                 <div>
                     <p>LOBBBBBY: {id}</p>
                     <p>I am player: {playerData.playerName}</p>
-                    <ChatBox messages={playerMessages}/>
+                    <ChatBox messagesData={playerMessages}/>
                 </div>
             }
         </div>

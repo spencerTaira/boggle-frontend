@@ -77,10 +77,10 @@ function App() {
 
   return (
     <userContext.Provider value={
-      { 
-        playerData, 
-        playerMessages, 
-        updatePlayerData, 
+      {
+        playerData,
+        playerMessages,
+        updatePlayerData,
         setPlayerId,
         appendMessages
       }

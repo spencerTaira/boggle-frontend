@@ -3,11 +3,20 @@ interface PlayerMessageInterface {
     message: string
 }
 
-function ChatBox({messages}:{messages:Array<PlayerMessageInterface>}){
+function ChatBox({messagesData}:{messagesData:Array<PlayerMessageInterface>}){
 
+    // messagesData.map((msgData, idx:number)=>
+    //     (<p key={idx}>{msgData.playerName}, {msgData.message}</p>)
+    // )
     return (
         <div>
-            {messages.map((msg, idx:number)=><p key={idx}>{msg.playerName}, {msg.message}</p>)}
+            <form>
+                <textarea name="messages">
+                    {
+                        'Hello'
+                    }
+                </textarea>
+            </form>
         </div>
     )
 }
