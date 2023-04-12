@@ -3,7 +3,7 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 import CreateLobbyForm from "./CreateLobbyForm";
 import JoinLobbyForm from "./JoinLobbyForm";
 import EnterPlayerNameForm from "./EnterPlayerNameForm";
-import { socket } from "../../socket";
+import { socketIntro } from "../../socket";
 import userContext from "../../userContext";
 
 interface LobbyInterface {
@@ -69,18 +69,18 @@ function Intro() {
         // }
 
         function getLobbys() {
-            socket.emit('intro-get-lobbys');
+            socketIntro.emit('intro_get_lobbys');
         }
 
         const intervalId = setInterval(getLobbys, 2000);
 
         // socket.on('connected', onConnect);
         // socket.emit('intro-get-lobbys');
-        socket.on('intro-send-lobbys', updateLobbys);
+        socketIntro.on('intro-send-lobbys', updateLobbys);
 
         return () => {
             // socket.off('connected', onConnect);
-            socket.off('intro-send-lobbys', updateLobbys);
+            socketIntro.off('intro-send-lobbys', updateLobbys);
             clearInterval(intervalId)
         };
     }, []);
