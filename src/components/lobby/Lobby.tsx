@@ -98,7 +98,6 @@ function Lobby() {
         
         //Who is in lobby display (info)
         //Websocket ask for other player data
-        //Announce entrance into room
     }, [id, navigate, playerData]);
 
     return (

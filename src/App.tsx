@@ -7,6 +7,7 @@ import Lobby from "./components/lobby/Lobby";
 import Game from "./components/game/Game";
 import userContext from './userContext';
 import BoggleApi from './api';
+import { socket } from './socket';
 
 interface PlayerDataInterface {
   playerId: number,
@@ -58,6 +59,9 @@ function App() {
       }
     }
     getPlayerData();
+    // return () => {
+    //   socket.emit('goodbye', playerData)
+    // }
   }, [playerId, sessionPlayerData]);
 
 

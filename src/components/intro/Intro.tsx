@@ -64,22 +64,15 @@ function Intro() {
 
 
     useEffect(() => {
-        // function onConnect(msg: string) {
-        //     getLobbys();
-        // }
-
         function getLobbys() {
             socketIntro.emit('intro_get_lobbys');
         }
 
         const intervalId = setInterval(getLobbys, 2000);
 
-        // socket.on('connected', onConnect);
-        // socket.emit('intro-get-lobbys');
         socketIntro.on('intro-send-lobbys', updateLobbys);
 
         return () => {
-            // socket.off('connected', onConnect);
             socketIntro.off('intro-send-lobbys', updateLobbys);
             clearInterval(intervalId);
         };
