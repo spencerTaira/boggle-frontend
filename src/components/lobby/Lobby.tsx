@@ -4,7 +4,7 @@ import BoggleAPI from "../../api";
 import userContext from "../../userContext";
 import EnterPasswordForm from "./EnterPasswordForm";
 import ChatBox from "./ChatBox";
-import { socket } from "../../socket";
+import { socket, socketLobby } from "../../socket";
 
 function Lobby() {
     console.debug('Entered Lobby');
@@ -59,29 +59,43 @@ function Lobby() {
         }
 
         checkLobby();
-
-        if (playerData.currLobby === id) {
-            socket.emit("joining", playerData)
+        
+        async function rejoinLobby(playerData:any){
+            const result = await BoggleAPI.rejoinLobby(playerData)
+            if (result.error) {
+                // able to send information along with navigate and access at the final destination
+                navigate(
+                    '/',
+                    {
+                        state: {
+                            error: result.error
+                        }
+                    }
+                )
+            }
         }
 
-
-        // function onConnect(msg: string) {
-        //     console.log("Message received", msg);
-        //     socket.emit("joining", playerData)
-        // }
+        if (playerData.currLobby === id) {
+            rejoinLobby(playerData);
+            socketLobby.emit("joining", playerData);
+        }
 
         function handleJoined(msg:Record<string, string>){
             appendMessages(msg);
+            console.log("handleJoined msg", msg);
         }
 
-        // socket.on('connected', onConnect);
-        socket.on('joined', handleJoined)
-
-
+        socketLobby.on('joined', handleJoined)
+        
+        //We should never see our own leaving message
+        socketLobby.on('left', (msg)=>console.log(msg))
+        
         return () => {
-            // socket.off('connected', onConnect);
-            socket.off('joined', handleJoined);
+            socketLobby.emit('leave', playerData)
+            socketLobby.off('joined');
+            socketLobby.off('left');
         };
+        
         //Who is in lobby display (info)
         //Websocket ask for other player data
         //Announce entrance into room

@@ -65,12 +65,13 @@ class BoggleApi {
       }
    }
 
-   static async joinLobby(playerData) {
+   static async rejoinLobby(playerData){
+      
       try {
          const result = await axios(
             {
                method: "post",
-               url: `${BASE_API_URL}/lobby/join`,
+               url: `${BASE_API_URL}/lobby/rejoin`,
                data: playerData
             }
          )
@@ -82,7 +83,27 @@ class BoggleApi {
             status: e.response.status
          }
       }
+
    }
+
+   // static async joinLobby(playerData) {
+   //    try {
+   //       const result = await axios(
+   //          {
+   //             method: "post",
+   //             url: `${BASE_API_URL}/lobby/join`,
+   //             data: playerData
+   //          }
+   //       )
+
+   //       return result.data;
+   //    } catch (e) {
+   //       return {
+   //          error: e.response.data.error,
+   //          status: e.response.status
+   //       }
+   //    }
+   // }
 
    static async getPlayerData(playerId) {
       try {

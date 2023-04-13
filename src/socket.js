@@ -4,4 +4,4 @@ const URL = 'http://localhost:5000';
 
 export const socket = io(URL);
 export const socketIntro = io(`${URL}/intro`);
-export const socketLobby = io(`${URL}/lobby`)
+export const socketLobby = io(`${URL}/lobby`);

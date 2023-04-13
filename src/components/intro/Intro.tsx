@@ -81,7 +81,7 @@ function Intro() {
         return () => {
             // socket.off('connected', onConnect);
             socketIntro.off('intro-send-lobbys', updateLobbys);
-            clearInterval(intervalId)
+            clearInterval(intervalId);
         };
     }, []);
 
