@@ -21,6 +21,8 @@ function Lobby() {
             "private": true
         }
     )
+    
+    const [joined, setJoined] = useState(false)
     const navigate = useNavigate();
 
     console.log("what is playerData in Lobby Component", playerData);
@@ -75,7 +77,7 @@ function Lobby() {
             }
         }
 
-        if (playerData.currLobby === id) {
+        if (playerData.currLobby === id && joined === false) {
             rejoinLobby(playerData);
             socketLobby.emit("joining", playerData);
         }
@@ -104,7 +106,7 @@ function Lobby() {
         <div>
             {playerData.currLobby !== id
                 ?
-                <EnterPasswordForm id={id!} />
+                <EnterPasswordForm id={id!} setJoined={setJoined} />
                 :
                 <div>
                     <p>LOBBBBBY: {id}</p>

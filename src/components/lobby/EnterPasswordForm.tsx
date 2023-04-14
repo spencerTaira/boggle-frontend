@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import BoggleApi from "../../api";
 import userContext from "../../userContext";
 
-function EnterPasswordForm({id}:{id:string}){
+function EnterPasswordForm({id, setJoined}:{id:string, setJoined:any}){
     const {playerData, updatePlayerData} = useContext(userContext);
     const [formData, setFormData] = useState(
         {
@@ -38,6 +38,7 @@ function EnterPasswordForm({id}:{id:string}){
             updatePlayerData({
                 currLobby: result.lobbyName
             });
+            setJoined(true)
         }
     }
 
