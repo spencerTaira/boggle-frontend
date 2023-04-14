@@ -15,10 +15,10 @@ interface PlayerDataInterface {
   currLobby: string
 }
 
-interface PlayerMessageInterface {
-  playerName: string,
-  message: string
-}
+// interface PlayerMessageInterface {
+//   playerName: string,
+//   message: string
+// }
 
 /**
  * Render App
@@ -40,7 +40,7 @@ function App() {
   }
 
   const [playerData, setPlayerData] = useState(sessionPlayerData || {});
-  const [playerMessages, setPlayerMessages] = useState<Array<PlayerMessageInterface>>([])
+  // const [playerMessages, setPlayerMessages] = useState<Array<PlayerMessageInterface>>([])
 
   console.debug("App: what is playerData?", playerData);
   console.debug("App: what is playerId", playerId);
@@ -75,18 +75,16 @@ function App() {
     localStorage.setItem('playerId', String(playerId));
   }
 
-  function appendMessages(newMessage: PlayerMessageInterface) {
-    setPlayerMessages((prevMessages) => ([...prevMessages, newMessage]))
-  }
+  // function appendMessages(newMessage: PlayerMessageInterface) {
+  //   setPlayerMessages((prevMessages) => ([...prevMessages, newMessage]))
+  // }
 
   return (
     <userContext.Provider value={
       {
         playerData,
-        playerMessages,
         updatePlayerData,
         setPlayerId,
-        appendMessages
       }
     }>
       <div className="App">
