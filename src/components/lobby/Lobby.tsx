@@ -82,6 +82,12 @@ function Lobby() {
             socketLobby.emit("joining", playerData);
         }
 
+        if (playerData.currLobby === id && joined === true) {
+            socketLobby.emit("joining");
+        }
+
+
+
         function handleJoined(msg:Record<string, string>){
             appendMessages(msg);
             console.log("handleJoined msg", msg);
