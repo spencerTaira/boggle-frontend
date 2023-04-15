@@ -29,11 +29,11 @@ import { socket, socketLobby } from "../../../socket";
 
         startGame - callback
 */
-function LobbyUI({messages, players, lobbyData, startGame}) {
-    console.debug('Lobby UI');
+// function LobbyUI({messages, players, lobbyData, startGame}) {
+//     console.debug('Lobby UI');
 
-    const { playerData } = useContext(userContext);
+//     const { playerData } = useContext(userContext);
 
-}
+// }
 
-export default LobbyUI;
+// export default LobbyUI;

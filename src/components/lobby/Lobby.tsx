@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import BoggleAPI from "../../api";
 import userContext from "../../userContext";
 import EnterPasswordForm from "./EnterPasswordForm";
-import LobbyUI from "./lobbyUI/LobbyUI";
+// import LobbyUI from "./lobbyUI/LobbyUI";
 import GameUI from "./gameUI/GameUI";
 import { socketLobby } from "../../socket";
 
@@ -18,7 +18,7 @@ interface PlayerInLobbyInterface {
 }
 
 function Lobby() {
-    console.debug('Entered Lobby');
+    console.debug('Entered Lobby Component');
 
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
@@ -48,7 +48,7 @@ function Lobby() {
 
     useEffect(() => {
         console.debug('Lobby Use Effect Running');
-        async function checkLobby() {
+        async function checkAndJoinLobby() {
             const result = await BoggleAPI.checkLobby({ lobbyName: id });
 
             if (result.error) {
@@ -61,9 +61,21 @@ function Lobby() {
             }
 
             setLobbyData(() => result.lobbyData);
+
+            //TODO: Figure out how to handle joining vs rejoining
+            // if (playerData.currLobby === id) {
+        //     if (lobbyData.host === playerData.playerId) {
+        //         setJoined(() => true);
+        //     } else if (!joined) {
+        //         rejoinLobby(playerData);
+        //     }
+
+        //     socketLobby.emit("joining", playerData);
+        // }
+            socketLobby.emit('test', 'Did this work');
         }
 
-        checkLobby();
+        checkAndJoinLobby();
 
         async function rejoinLobby(playerData:any){
             const result = await BoggleAPI.rejoinLobby(playerData)
@@ -72,15 +84,29 @@ function Lobby() {
             }
         }
 
-        if (playerData.currLobby === id) {
-            if (lobbyData.host === playerData.playerId) {
-                setJoined(() => true);
-            } else if (!joined) {
-                rejoinLobby(playerData);
-            }
+        /*
+            Because we are allowing people to rejoin without re-entering a passworde if 'currLobby'
+            exists in playerData with the right 'ID', they do not have to go through the enterpassword
+            or joinlobbyform which has the 'Join' method which puts them in the proper table.
 
-            socketLobby.emit("joining", playerData);
-        }
+            Thus, if a player is "rejoining" they must go through a rejoining process on the backend in
+            order to be put into the proper table.
+
+            Our ch
+
+
+        */
+
+
+        // if (playerData.currLobby === id) {
+        //     if (lobbyData.host === playerData.playerId) {
+        //         setJoined(() => true);
+        //     } else if (!joined) {
+        //         rejoinLobby(playerData);
+        //     }
+
+        //     socketLobby.emit("joining", playerData);
+        // }
 
         function updatePlayers(playersInLobby: Array<PlayerInLobbyInterface>) {
             setPlayers(() => playersInLobby);
