@@ -43,7 +43,14 @@ function Lobby() {
     console.table(playerMessages);
 
     function appendMessage(newMessage: PlayerMessageInterface) {
+        console.log('UPDATING MESSAGES');
         setPlayerMessages((prevMessages) => ([...prevMessages, newMessage]));
+    }
+
+    function updatePlayers(playersInLobby: Array<PlayerInLobbyInterface>) {
+        console.log('UPDATING PLAYERS');
+        console.log(playersInLobby);
+        setPlayers(() => playersInLobby);
     }
 
     useEffect(() => {
@@ -56,20 +63,24 @@ function Lobby() {
                 navigate('/', { state: { error: result.error } });
             }
 
+            console.log('WHEN DID THIS HAPPEN????');
             setLobbyData(() => result.lobby);
+
+            if (playerData.currLobby === id){
+                console.warn("are the things equal???");
+                socketLobby.emit("joining", playerData);
+            }
         }
 
-        if (playerData.currLobby === id){
-            console.warn("are the things equal???")
-            
-            checkAndJoinLobby();
-            socketLobby.emit("joining", playerData);
-        }
+        // if (playerData.currLobby === id){
+        //     console.warn("are the things equal???");
 
-        function updatePlayers(playersInLobby: Array<PlayerInLobbyInterface>) {
-            setPlayers(() => playersInLobby);
-        }
+        //     checkAndJoinLobby();
+        //     socketLobby.emit("joining", playerData);
+        // }
 
+        checkAndJoinLobby();
+        
         //We should never see our own leaving message
         socketLobby.on('message', appendMessage);
         socketLobby.on('update_players', updatePlayers);
