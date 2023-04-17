@@ -34,7 +34,7 @@ function Lobby() {
     );
     const [players, setPlayers] = useState<Array<PlayerInLobbyInterface>>([]);
     const [playerMessages, setPlayerMessages] = useState<Array<PlayerMessageInterface>>([]);
-    const [joined, setJoined] = useState(false);
+    // const [joined, setJoined] = useState(false);
     const [gameStart, setGameStart] = useState(false);
 
     console.log("what is playerData in Lobby Component", playerData);
@@ -49,64 +49,22 @@ function Lobby() {
     useEffect(() => {
         console.debug('Lobby Use Effect Running');
         async function checkAndJoinLobby() {
-            const result = await BoggleAPI.checkLobby({ lobbyName: id });
+            const result = await BoggleAPI.joinLobby({ lobbyName: id, playerId: playerData.playerId });
 
             if (result.error) {
                 // able to send information along with navigate and access at the final destination
                 navigate('/', { state: { error: result.error } });
             }
 
-            if (result.lobbyData.curr_players >= result.lobbyData.max_players) {
-                navigate('/', { state: { error: `Lobby ${id} full. Sorry :-(` } });
-            }
-
-            setLobbyData(() => result.lobbyData);
-
-            //TODO: Figure out how to handle joining vs rejoining
-            // if (playerData.currLobby === id) {
-        //     if (lobbyData.host === playerData.playerId) {
-        //         setJoined(() => true);
-        //     } else if (!joined) {
-        //         rejoinLobby(playerData);
-        //     }
-
-        //     socketLobby.emit("joining", playerData);
-        // }
-            socketLobby.emit('test', 'Did this work');
+            setLobbyData(() => result.lobby);
         }
 
-        checkAndJoinLobby();
-
-        async function rejoinLobby(playerData:any){
-            const result = await BoggleAPI.rejoinLobby(playerData)
-            if (result.error) {
-                navigate('/', { state: { error: result.error } });
-            }
+        if (playerData.currLobby === id){
+            console.warn("are the things equal???")
+            
+            checkAndJoinLobby();
+            socketLobby.emit("joining", playerData);
         }
-
-        /*
-            Because we are allowing people to rejoin without re-entering a passworde if 'currLobby'
-            exists in playerData with the right 'ID', they do not have to go through the enterpassword
-            or joinlobbyform which has the 'Join' method which puts them in the proper table.
-
-            Thus, if a player is "rejoining" they must go through a rejoining process on the backend in
-            order to be put into the proper table.
-
-            Our ch
-
-
-        */
-
-
-        // if (playerData.currLobby === id) {
-        //     if (lobbyData.host === playerData.playerId) {
-        //         setJoined(() => true);
-        //     } else if (!joined) {
-        //         rejoinLobby(playerData);
-        //     }
-
-        //     socketLobby.emit("joining", playerData);
-        // }
 
         function updatePlayers(playersInLobby: Array<PlayerInLobbyInterface>) {
             setPlayers(() => playersInLobby);
@@ -121,11 +79,11 @@ function Lobby() {
             socketLobby.off('message', appendMessage);
             socketLobby.off('update_players', updatePlayers);
         };
-    }, [id, navigate, playerData, joined]);
+    }, [id, navigate, playerData]);
 
     if (playerData.currLobby !== id) {
         return (
-            <EnterPasswordForm id={id!} setJoined={setJoined} />
+            <EnterPasswordForm id={id!} />
         )
     }
 

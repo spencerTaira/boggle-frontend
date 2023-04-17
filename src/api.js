@@ -4,34 +4,33 @@ const BASE_API_URL = "http://localhost:5000";
 
 class BoggleApi {
 
-   static async checkLobby(lobbyId) {
-      try {
-         const result = await axios(
-            {
-               method: "get",
-               url: `${BASE_API_URL}/lobby`,
-               params: lobbyId
-            }
-         )
+   // static async checkLobby(lobbyId) {
+   //    try {
+   //       const result = await axios(
+   //          {
+   //             method: "get",
+   //             url: `${BASE_API_URL}/lobby`,
+   //             params: lobbyId
+   //          }
+   //       )
 
-         return result.data;
-      } catch (e) {
-         return {
-            error: e.response.data.error,
-            status: e.response.status
-         }
-      }
-   }
+   //       return result.data;
+   //    } catch (e) {
+   //       return {
+   //          error: e.response.data.error,
+   //          status: e.response.status
+   //       }
+   //    }
+   // }
 
-   static async createLobby(lobbyData, playerId) {
-      const data = {...lobbyData, playerId}
-      
+   static async createLobby(lobbyData) {
+
       try {
          const result = await axios(
             {
                method: "post",
                url: `${BASE_API_URL}/lobby/create`,
-               data: data
+               data: lobbyData
             }
          )
 
@@ -44,15 +43,33 @@ class BoggleApi {
       }
    }
 
-   static async authenticateAndJoinLobby(lobbyData, playerId) {
-      const data = {...lobbyData, playerId}
+   static async authenticate(lobbyCredentials){
+      try {
+         const result = await axios(
+            {
+               method: "get",
+               url: `${BASE_API_URL}/lobby/authenticate`,
+               params: lobbyCredentials
+            }
+         )
+
+         return result.data;
+      } catch (e) {
+         return {
+            error: e.response.data.error,
+            status: e.response.status
+         }
+      }
+   }
+
+   static async joinLobby(joinData) {
       
       try {
          const result = await axios(
             {
                method: "post",
                url: `${BASE_API_URL}/lobby/join`,
-               data: data
+               data: joinData
             }
          )
 
@@ -65,26 +82,26 @@ class BoggleApi {
       }
    }
 
-   static async rejoinLobby(playerData){
+   // static async rejoinLobby(playerData){
       
-      try {
-         const result = await axios(
-            {
-               method: "post",
-               url: `${BASE_API_URL}/lobby/rejoin`,
-               data: playerData
-            }
-         )
+   //    try {
+   //       const result = await axios(
+   //          {
+   //             method: "post",
+   //             url: `${BASE_API_URL}/lobby/rejoin`,
+   //             data: playerData
+   //          }
+   //       )
 
-         return result.data;
-      } catch (e) {
-         return {
-            error: e.response.data.error,
-            status: e.response.status
-         }
-      }
+   //       return result.data;
+   //    } catch (e) {
+   //       return {
+   //          error: e.response.data.error,
+   //          status: e.response.status
+   //       }
+   //    }
 
-   }
+   // }
 
    // static async joinLobby(playerData) {
    //    try {

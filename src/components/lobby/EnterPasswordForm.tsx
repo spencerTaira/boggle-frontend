@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import BoggleApi from "../../api";
 import userContext from "../../userContext";
 
-function EnterPasswordForm({id, setJoined}:{id:string, setJoined:any}){
+function EnterPasswordForm({id}:{id:string}){
     const {playerData, updatePlayerData} = useContext(userContext);
     const [formData, setFormData] = useState(
         {
@@ -28,9 +28,8 @@ function EnterPasswordForm({id, setJoined}:{id:string, setJoined:any}){
 
     async function handleSubmit(e: React.FormEvent){
         e.preventDefault();
-        const result = await BoggleApi.authenticateAndJoinLobby(
-            formData, 
-            playerData.playerId
+        const result = await BoggleApi.authenticate(
+            formData
         );
         if (result.error) {
             setErrorMessages(() => [result.error])
@@ -38,7 +37,6 @@ function EnterPasswordForm({id, setJoined}:{id:string, setJoined:any}){
             updatePlayerData({
                 currLobby: result.lobbyName
             });
-            setJoined(true)
         }
     }
 

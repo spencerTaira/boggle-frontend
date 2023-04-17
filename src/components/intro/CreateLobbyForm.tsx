@@ -39,7 +39,7 @@ function CreateLobbyForm({cancel}:{cancel:Function}) {
 
     async function handleSubmit(e:React.FormEvent){
         e.preventDefault();
-        const result = await BoggleApi.createLobby(formData, playerData.playerId);
+        const result = await BoggleApi.createLobby(formData);
 
         if (result.error) {
             setErrorMessages(() => [result.error]);
