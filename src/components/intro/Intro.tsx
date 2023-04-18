@@ -5,6 +5,7 @@ import JoinLobbyForm from "./JoinLobbyForm";
 import EnterPlayerNameForm from "./EnterPlayerNameForm";
 import { socketIntro } from "../../socket";
 import userContext from "../../userContext";
+import './Intro.css'
 
 interface LobbyInterface {
     "lobby_name": string,
@@ -117,9 +118,19 @@ function Intro() {
             lobbyList = 'There are currently no open lobbies';
         } else {
             lobbyList = lobbys.map((lobby) =>
-                <div key={lobby.lobby_name}>
-                    <h5>{lobby.lobby_name} {lobby.curr_players||0}/{lobby.max_players} Players</h5>
-                    <button onClick={() => joinLobby(lobby.lobby_name)}>Join</button>
+                <div key={lobby.lobby_name} className='Intro-lobby'>
+                    
+                    <span className="lobby-name"><h4>{lobby.lobby_name}</h4></span>
+                    <span className="curr-players"> {lobby.curr_players||0}
+                        <span className="max-players">/{lobby.max_players} Players</span>
+                    </span>
+                    
+                    <button 
+                        className="join-button" 
+                        onClick={() => joinLobby(lobby.lobby_name)}
+                    >
+                        Join
+                    </button>
                 </div>
             )
         }
@@ -145,19 +156,32 @@ function Intro() {
 
     return (
         <div className='Intro'>
+            <div className="Intro-information">
             <p>Welcome to Boggle Your Own Brains!</p>
-            <h3>
-                {errorMessage}
-            </h3>
-            <button onClick={showCreateLobbyForm}>Create a new lobby!</button>
-            <button onClick={showJoinLobbyForm}>Join a lobby!</button>
-            {form}
-            <div className='Intro-lobby-container'>
+                <h3>
+                    {errorMessage}
+                </h3>
+                <button 
+                    onClick={showCreateLobbyForm}
+                    className="Intro-button"
+                >
+                    Create a new lobby!
+                </button>
+                <button 
+                    onClick={showJoinLobbyForm}
+                    className="Intro-button"
+                >
+                    Join a lobby!
+                </button>
+                {form}
+            </div>
+            <div className='Intro-lobbys-container'>
                 <h3>
                     Open Lobbies:
                 </h3>
-                {/* TODO: Make lobbyList a component */}
-                {lobbyList}
+                <div className="Intro-lobbys">{/* TODO: Make lobbyList a component */}
+                    {lobbyList}
+                </div>
             </div>
         </div>
     )

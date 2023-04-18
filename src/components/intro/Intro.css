@@ -1,0 +1,45 @@
+.Intro{
+    width: 100vw;
+}
+
+.Intro-lobbys-container{
+    width:40vw;
+    display: inline-block;
+}
+.Intro-lobbys{
+    display: inline-block;
+    
+}
+.Intro-lobby{
+    border: 2px solid black;
+    align-items: center;
+    width:40vw;
+    height: 75px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.Intro-button{
+    background: none;
+    border: none;
+}
+.Intro-button:hover{
+    box-shadow: 2px 2px pink;
+    font-style: italic;
+    background-color: crimson;
+}
+.join-button{
+    margin: auto 20px;
+}
+.lobby-name{
+    margin: auto;
+}
+
+.curr-players{
+    color: chartreuse;
+}
+
+.max-players{
+    font-style: italic;
+    color: black;
+}
