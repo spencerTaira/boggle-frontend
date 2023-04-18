@@ -157,7 +157,7 @@ function Intro() {
     return (
         <div className='Intro'>
             <div className="Intro-information">
-            <p>Welcome to Boggle Your Own Brains!</p>
+            <p className="Intro-title">Welcome to Boggle Your Own Brains!</p>
                 <h3>
                     {errorMessage}
                 </h3>

@@ -1,9 +1,8 @@
 .Intro{
-    width: 100vw;
+
 }
 
 .Intro-lobbys-container{
-    width:40vw;
     display: inline-block;
 }
 .Intro-lobbys{
@@ -13,10 +12,11 @@
 .Intro-lobby{
     border: 2px solid black;
     align-items: center;
-    width:40vw;
+    width:350px;
     height: 75px;
     display: flex;
     justify-content: space-between;
+    margin-top: 10px;
 }
 
 .Intro-button{
@@ -36,10 +36,14 @@
 }
 
 .curr-players{
-    color: chartreuse;
+    color: rgb(136, 208, 63);
 }
 
 .max-players{
     font-style: italic;
     color: black;
+}
+
+.Intro-title{
+    font-weight: bolder;
 }
