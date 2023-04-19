@@ -7,7 +7,7 @@ import Lobby from "./components/lobby/Lobby";
 import Game from "./components/game/Game";
 import userContext from './userContext';
 import BoggleApi from './api';
-import { socket } from './socket';
+import EnterPlayerNameForm from './components/intro/EnterPlayerNameForm';
 
 interface PlayerDataInterface {
   playerId: number,
@@ -15,10 +15,11 @@ interface PlayerDataInterface {
   currLobby: string
 }
 
-// interface PlayerMessageInterface {
-//   playerName: string,
-//   message: string
-// }
+const defaultPlayerData = {
+  playerId: 0,
+  playerName: '',
+  currLobby: ''
+}
 
 /**
  * Render App
@@ -26,7 +27,7 @@ interface PlayerDataInterface {
  * State: none
  * Props: none
  *
- * App -> Intro
+ * App -> BrowserRouter -> Routes || EnterPlayerNameForm
  */
 
 function App() {
@@ -35,12 +36,11 @@ function App() {
   const playerId = localStorage.getItem("playerId")
 
   let sessionPlayerData = sessionStorage.getItem("playerData")
-  if (sessionPlayerData !== null) {
-    sessionPlayerData = JSON.parse(sessionPlayerData)
-  }
+  let sessionPlayerDataParsed: PlayerDataInterface = sessionPlayerData !== null
+                                                      ? JSON.parse(sessionPlayerData)
+                                                      : defaultPlayerData;
 
-  const [playerData, setPlayerData] = useState(sessionPlayerData || {});
-  // const [playerMessages, setPlayerMessages] = useState<Array<PlayerMessageInterface>>([])
+  const [playerData, setPlayerData] = useState(sessionPlayerDataParsed);
 
   console.debug("App: what is playerData?", playerData);
   console.debug("App: what is playerId", playerId);
@@ -59,9 +59,6 @@ function App() {
       }
     }
     getPlayerData();
-    // return () => {
-    //   socket.emit('goodbye', playerData)
-    // }
   }, [playerId, sessionPlayerData]);
 
 
@@ -75,10 +72,6 @@ function App() {
     localStorage.setItem('playerId', String(playerId));
   }
 
-  // function appendMessages(newMessage: PlayerMessageInterface) {
-  //   setPlayerMessages((prevMessages) => ([...prevMessages, newMessage]))
-  // }
-
   return (
     <userContext.Provider value={
       {
@@ -90,12 +83,16 @@ function App() {
       <div className="App">
         <BrowserRouter>
           <Nav />
-          <Routes>
-            <Route path="/" element={<Intro />} />
-            <Route path="/lobby/:id" element={<Lobby />} />
-            <Route path="/game/:id" element={<Game />} />
-            <Route path="*" element={<Navigate to="/" />} />
-          </Routes>
+          {
+          !playerData.playerName
+            ? <EnterPlayerNameForm />
+            : <Routes>
+                <Route path="/" element={<Intro />} />
+                <Route path="/lobby/:id" element={<Lobby />} />
+                <Route path="/game/:id" element={<Game />} />
+                <Route path="*" element={<Navigate to="/" />} />
+              </Routes>
+          }
         </BrowserRouter>
       </div>
     </userContext.Provider>
@@ -103,11 +100,3 @@ function App() {
 }
 
 export default App;
-
-/*
-Thoughts/planning
-
-player id stored to recall saved name
-keep room info in session storage (roomId/pw)
-
-*/
