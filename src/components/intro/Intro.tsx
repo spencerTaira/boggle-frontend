@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import CreateLobbyForm from "./CreateLobbyForm";
 import JoinLobbyForm from "./JoinLobbyForm";
-import EnterPlayerNameForm from "./EnterPlayerNameForm";
 import { socketIntro } from "../../socket";
-import userContext from "../../userContext";
 import './Intro.css'
 
 interface LobbyInterface {
@@ -21,8 +19,18 @@ interface LobbyInterface {
  * Render Intro Component
  *
  * State:
- *      lobbys: [] of existing lobbies
+ *      lobbys: [{
+ *          'lobby_name': string,
+ *          'curr_players': number,
+ *          'max_players': number
+ *      }, ...]
+ *
  *      loading: boolean
+ *
+ *      showForm: {
+ *          visibleForm: '',
+            greyOverlay: false
+ *      }
  *
  * Props:
  *      None
@@ -33,28 +41,23 @@ interface LobbyInterface {
  */
 
 function Intro() {
-    console.debug("Entered Intro component")
+    console.debug("Entered Intro component");
 
-    const { playerData } = useContext(userContext);
     const [showForm, setShowForm] = useState(
         {
             visibleForm: '',
             greyOverlay: false
         }
-    )
-    const [lobbys, setLobbys] = useState<Array<LobbyInterface>>(
-        []
-    )
-    const [loading, setLoading] = useState(false)
-    const navigate = useNavigate()
+    );
+    const [lobbys, setLobbys] = useState<Array<LobbyInterface>>([]);
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
     const location = useLocation();
 
     // able to access information that was sent along with the navigate from the prior location
     const errorMessage = location.state?.error;
 
     console.log('errorMessage', errorMessage);
-    // console.log("What is loading?", loading);
-    // console.log("What is intro form?", showForm);
     console.log("What is lobbys?", lobbys);
 
     function updateLobbys(lobbysData: any) {
@@ -85,7 +88,7 @@ function Intro() {
                 ...showForm,
                 visibleForm: "create"
             }
-        )
+        );
     }
 
     function showJoinLobbyForm() {
@@ -94,7 +97,7 @@ function Intro() {
                 ...showForm,
                 visibleForm: "join"
             }
-        )
+        );
     }
 
     function formCancel() {
@@ -103,7 +106,7 @@ function Intro() {
                 ...showForm,
                 visibleForm: ""
             }
-        )
+        );
     }
 
     function joinLobby(lobbyName: string) {
@@ -119,14 +122,14 @@ function Intro() {
         } else {
             lobbyList = lobbys.map((lobby) =>
                 <div key={lobby.lobby_name} className='Intro-lobby'>
-                    
+
                     <span className="lobby-name"><h4>{lobby.lobby_name}</h4></span>
                     <span className="curr-players"> {lobby.curr_players||0}
                         <span className="max-players">/{lobby.max_players} Players</span>
                     </span>
-                    
-                    <button 
-                        className="join-button" 
+
+                    <button
+                        className="join-button"
                         onClick={() => joinLobby(lobby.lobby_name)}
                     >
                         Join
@@ -134,14 +137,6 @@ function Intro() {
                 </div>
             )
         }
-    }
-
-    if (!playerData.playerName) {
-        return (
-            <div>
-                <EnterPlayerNameForm />
-            </div>
-        )
     }
 
     let form;
@@ -161,13 +156,13 @@ function Intro() {
                 <h3>
                     {errorMessage}
                 </h3>
-                <button 
+                <button
                     onClick={showCreateLobbyForm}
                     className="Intro-button"
                 >
                     Create a new lobby!
                 </button>
-                <button 
+                <button
                     onClick={showJoinLobbyForm}
                     className="Intro-button"
                 >

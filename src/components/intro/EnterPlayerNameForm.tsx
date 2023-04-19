@@ -10,7 +10,7 @@ import userContext from "../../userContext";
  *      playerName: (string)
  *  }
  *
- * App -> Lobby -> EnterPlayerNameForm
+ * App -> EnterPlayerNameForm
  */
 
 function EnterPlayerNameForm() {

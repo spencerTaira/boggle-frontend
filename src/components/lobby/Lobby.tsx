@@ -56,20 +56,18 @@ function Lobby() {
     useEffect(() => {
         console.debug('Lobby Use Effect Running');
         async function checkAndJoinLobby() {
-            const result = await BoggleAPI.joinLobby({ lobbyName: id, playerId: playerData.playerId });
+                const result = await BoggleAPI.joinLobby({ lobbyName: id, playerId: playerData.playerId });
 
-            if (result.error) {
-                // able to send information along with navigate and access at the final destination
-                navigate('/', { state: { error: result.error } });
-            }
+                if (result.error) {
+                    // able to send information along with navigate and access at the final destination
+                    navigate('/', { state: { error: result.error } });
+                }
 
-            console.log('WHEN DID THIS HAPPEN????');
-            setLobbyData(() => result.lobby);
+                console.log('WHEN DID THIS HAPPEN????');
+                setLobbyData(() => result.lobby);
 
-            if (playerData.currLobby === id){
                 console.warn("are the things equal???");
                 socketLobby.emit("joining", playerData);
-            }
         }
 
         // if (playerData.currLobby === id){
@@ -78,9 +76,10 @@ function Lobby() {
         //     checkAndJoinLobby();
         //     socketLobby.emit("joining", playerData);
         // }
+        if (playerData.currLobby === id) {
+            checkAndJoinLobby();
+        }
 
-        checkAndJoinLobby();
-        
         //We should never see our own leaving message
         socketLobby.on('message', appendMessage);
         socketLobby.on('update_players', updatePlayers);
