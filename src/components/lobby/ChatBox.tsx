@@ -1,7 +1,7 @@
-interface PlayerMessageInterface {
-    playerName: string,
-    message: string
-}
+// interface PlayerMessageInterface {
+//     playerName: string,
+//     message: string
+// }
 
 function ChatBox({messagesData}:{messagesData:Array<PlayerMessageInterface>}){
 

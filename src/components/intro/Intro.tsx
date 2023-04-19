@@ -4,16 +4,7 @@ import CreateLobbyForm from "./CreateLobbyForm";
 import JoinLobbyForm from "./JoinLobbyForm";
 import { socketIntro } from "../../socket";
 import './Intro.css'
-
-interface LobbyInterface {
-    "lobby_name": string,
-    "curr_players": number,
-    "max_players": number,
-    // "game_length": number,
-    // "private": boolean,
-    // "password": string,
-    // "host": number,
-}
+import { IntroLobbyInterface } from "../../interfaces";
 
 /**
  * Render Intro Component
@@ -49,7 +40,7 @@ function Intro() {
             greyOverlay: false
         }
     );
-    const [lobbys, setLobbys] = useState<Array<LobbyInterface>>([]);
+    const [lobbys, setLobbys] = useState<Array<IntroLobbyInterface>>([]);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();

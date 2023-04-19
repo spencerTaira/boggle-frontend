@@ -63,7 +63,7 @@ class BoggleApi {
    }
 
    static async joinLobby(joinData) {
-      
+
       try {
          const result = await axios(
             {
@@ -83,7 +83,7 @@ class BoggleApi {
    }
 
    // static async rejoinLobby(playerData){
-      
+
    //    try {
    //       const result = await axios(
    //          {

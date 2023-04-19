@@ -6,7 +6,9 @@ import ChatBox from "../ChatBox";
 import { socket, socketLobby } from "../../../socket";
 
 function GameUI() {
-
+    return (
+        <div>GAMEMEMEM</div>
+    );
 }
 
 export default GameUI;

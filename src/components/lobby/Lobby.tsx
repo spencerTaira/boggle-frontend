@@ -3,19 +3,40 @@ import { useParams, useNavigate } from "react-router-dom";
 import BoggleAPI from "../../api";
 import userContext from "../../userContext";
 import EnterPasswordForm from "./EnterPasswordForm";
-// import LobbyUI from "./lobbyUI/LobbyUI";
+import LobbyUI from "./lobbyUI/LobbyUI";
 import GameUI from "./gameUI/GameUI";
 import { socketLobby } from "../../socket";
+import { PlayerMessageInterface, PlayerInLobbyInterface } from "../../interfaces";
 
-interface PlayerMessageInterface {
-    playerName: string,
-    message: string
-};
+/**
+ * Renders top level Lobby component which houses both lobby/game UIs
+ *
+ * State:
+ *
+ *      players: [{
+ *          playerName: string,
+            playerId: number
+ *      }, ...]
 
-interface PlayerInLobbyInterface {
-    playerName: string,
-    playerId: number
-}
+        playerMessages: [{
+            playerName: string,
+            message: string
+        }, ...]
+
+        lobbyData: {
+            "game_length": 0,
+            "host": null,
+            "lobby_name": "",
+            "max_players": 0,
+            "private": true
+        }
+
+        gameStart: Boolean
+
+    Props: None
+    Context: { playerData }
+ *
+ */
 
 function Lobby() {
     console.debug('Entered Lobby Component');
@@ -34,7 +55,6 @@ function Lobby() {
     );
     const [players, setPlayers] = useState<Array<PlayerInLobbyInterface>>([]);
     const [playerMessages, setPlayerMessages] = useState<Array<PlayerMessageInterface>>([]);
-    // const [joined, setJoined] = useState(false);
     const [gameStart, setGameStart] = useState(false);
 
     console.log("what is playerData in Lobby Component", playerData);
@@ -56,26 +76,20 @@ function Lobby() {
     useEffect(() => {
         console.debug('Lobby Use Effect Running');
         async function checkAndJoinLobby() {
-                const result = await BoggleAPI.joinLobby({ lobbyName: id, playerId: playerData.playerId });
+            const result = await BoggleAPI.joinLobby({ lobbyName: id, playerId: playerData.playerId });
 
-                if (result.error) {
-                    // able to send information along with navigate and access at the final destination
-                    navigate('/', { state: { error: result.error } });
-                }
+            if (result.error) {
+                // able to send information along with navigate and access at the final destination
+                navigate('/', { state: { error: result.error } });
+            }
 
-                console.log('WHEN DID THIS HAPPEN????');
-                setLobbyData(() => result.lobby);
+            console.log('WHEN DID THIS HAPPEN????');
+            setLobbyData(() => result.lobby);
 
-                console.warn("are the things equal???");
-                socketLobby.emit("joining", playerData);
+            console.warn("are the things equal???");
+            socketLobby.emit("joining", playerData);
         }
 
-        // if (playerData.currLobby === id){
-        //     console.warn("are the things equal???");
-
-        //     checkAndJoinLobby();
-        //     socketLobby.emit("joining", playerData);
-        // }
         if (playerData.currLobby === id) {
             checkAndJoinLobby();
         }
@@ -94,24 +108,23 @@ function Lobby() {
     if (playerData.currLobby !== id) {
         return (
             <EnterPasswordForm id={id!} />
-        )
+        );
     }
 
     return (
         <div>
-            {/* {
+            {
                 !gameStart
-                ? <LobbyUI messages={playerMessages} players={} lobbyData={lobbyData} setGameStart={setGameStart} />
+                ? <LobbyUI
+                    messages={playerMessages}
+                    players={players}
+                    lobbyData={lobbyData}
+                    startGame={setGameStart}
+                />
                 : <GameUI />
-            } */}
-                {/* <div>
-                    <p>LOBBBBBY: {id}</p>
-                    <p>I am player: {playerData.playerName}</p>
-                    <ChatBox messagesData={playerMessages}/>
-                </div>
-            } */}
+            }
         </div>
-    )
+    );
 }
 
 export default Lobby;

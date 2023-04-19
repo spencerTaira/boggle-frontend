@@ -4,6 +4,7 @@ import BoggleAPI from "../../../api";
 import userContext from "../../../userContext";
 import ChatBox from "../ChatBox";
 import { socket, socketLobby } from "../../../socket";
+import { PlayerMessageInterface, PlayerInLobbyInterface, LobbyInterface } from "../../../interfaces";
 
 /*
     Renders LobbyUI component
@@ -29,11 +30,21 @@ import { socket, socketLobby } from "../../../socket";
 
         startGame - callback
 */
-// function LobbyUI({messages, players, lobbyData, startGame}) {
-//     console.debug('Lobby UI');
 
-//     const { playerData } = useContext(userContext);
+function LobbyUI({messages, players, lobbyData, startGame}:
+    {
+        messages: Array<PlayerMessageInterface>,
+        players: Array<PlayerInLobbyInterface>,
+        lobbyData: LobbyInterface,
+        startGame: Function
+    }) {
+    console.debug('Lobby UI');
 
-// }
+    const { playerData } = useContext(userContext);
 
-// export default LobbyUI;
+    return (
+        <div>Lobby</div>
+    );
+}
+
+export default LobbyUI;

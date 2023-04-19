@@ -8,12 +8,7 @@ import Game from "./components/game/Game";
 import userContext from './userContext';
 import BoggleApi from './api';
 import EnterPlayerNameForm from './components/intro/EnterPlayerNameForm';
-
-interface PlayerDataInterface {
-  playerId: number,
-  playerName: string,
-  currLobby: string
-}
+import { PlayerDataInterface } from './interfaces';
 
 const defaultPlayerData = {
   playerId: 0,
