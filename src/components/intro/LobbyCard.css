@@ -1,0 +1,31 @@
+
+.LobbyCard{
+    display: inline-block;
+    border: 2px solid black;
+    align-items: center;
+    width:350px;
+    height: 75px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.LobbyCard-join-button{
+    margin: auto 20px;
+}
+.LobbyCard-lobby-name{
+    margin: auto;
+}
+
+.LobbyCard-curr-players{
+    color: rgb(136, 208, 63);
+}
+
+.LobbyCard-max-players{
+    font-style: italic;
+    color: black;
+}
+
+.LobbyCard-title{
+    font-weight: bolder;
+}
