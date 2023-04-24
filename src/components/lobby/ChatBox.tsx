@@ -2,6 +2,7 @@
 //     playerName: string,
 //     message: string
 // }
+import { PlayerMessageInterface } from "../../interfaces";
 
 function ChatBox({messagesData}:{messagesData:Array<PlayerMessageInterface>}){
 
