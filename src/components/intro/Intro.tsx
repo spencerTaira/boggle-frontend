@@ -1,23 +1,13 @@
-import React, { useState, useEffect, useContext } from "react";
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useState } from "react";
+import { useLocation } from 'react-router-dom';
 import CreateLobbyForm from "./CreateLobbyForm";
 import JoinLobbyForm from "./JoinLobbyForm";
-import { socketIntro } from "../../socket";
 import './Intro.css'
-import { IntroLobbyInterface } from "../../interfaces";
 import LobbyList from "./LobbyList";
 /**
  * Render Intro Component
  *
  * State:
- *      lobbys: [{
- *          'lobby_name': string,
- *          'curr_players': number,
- *          'max_players': number
- *      }, ...]
- *
- *      loading: boolean
- *
  *      showForm: {
  *          visibleForm: '',
             greyOverlay: false
@@ -110,7 +100,7 @@ function Intro() {
                 <h3>
                     Open Lobbies:
                 </h3>
-                <div className="Intro-lobbys">{/* TODO: Make lobbyList a component */}
+                <div className="Intro-lobbys">
                     <LobbyList/>
                 </div>
             </div>

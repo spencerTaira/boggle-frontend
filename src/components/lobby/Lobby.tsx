@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import BoggleAPI from "../../api";
 import userContext from "../../userContext";
@@ -115,13 +115,14 @@ function Lobby() {
         <div>
             {
                 !gameStart
-                ? <LobbyUI
-                    messages={playerMessages}
-                    players={players}
-                    lobbyData={lobbyData}
-                    startGame={setGameStart}
-                />
-                : <GameUI />
+                    ? <LobbyUI
+                        messages={playerMessages}
+                        players={players}
+                        lobbyData={lobbyData}
+                        startGame={setGameStart}
+                        appendMessage={appendMessage}
+                    />
+                    : <GameUI />
             }
         </div>
     );

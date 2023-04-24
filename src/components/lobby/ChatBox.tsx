@@ -1,22 +1,62 @@
-// interface PlayerMessageInterface {
-//     playerName: string,
-//     message: string
-// }
+import { socketLobby } from "../../socket";
+import { useState, useContext } from "react";
+
 import { PlayerMessageInterface } from "../../interfaces";
+import userContext from "../../userContext";
 
-function ChatBox({messagesData}:{messagesData:Array<PlayerMessageInterface>}){
+function ChatBox(
+    {
+        messagesData, 
+        appendMessage
+    }
+    :
+    {
+        messagesData:Array<PlayerMessageInterface>,
+        appendMessage:Function
+    })
+{
 
+    const { playerName } = useContext(userContext)
+    const [formData, setFormData] = useState(
+        {
+            message:''
+        }
+    )
+    console.log("formdata??", formData)
+
+    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+        const { name, value } = e.target;
+        setFormData((fData) => ({
+            ...fData,
+            [name]: value,
+        }));
+    }
+
+    async function handleSubmit(e: React.FormEvent) {
+        e.preventDefault();
+
+        appendMessage({playerName, message:formData.message})
+        setFormData(()=>({message:''}))
+    }
     // messagesData.map((msgData, idx:number)=>
     //     (<p key={idx}>{msgData.playerName}, {msgData.message}</p>)
     // )
     return (
-        <div>
-            <form>
-                <textarea name="messages">
-                    {
-                        'Hello'
-                    }
-                </textarea>
+        <div className="ChatBox">
+            <div className="ChatBox-messages">
+                {messagesData.map(
+                    (msg, idx)=><p key={idx}>{msg.message}</p>
+                )}
+            </div>
+            <form onSubmit={handleSubmit}>
+                <input 
+                    type="text" 
+                    className="ChatBox-text-input"
+                    value={formData.message}
+                    name="message"
+                    onChange={handleChange}
+                />
+                <button>Send</button>
             </form>
         </div>
     )

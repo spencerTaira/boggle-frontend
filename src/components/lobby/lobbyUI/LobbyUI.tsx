@@ -31,19 +31,23 @@ import { PlayerMessageInterface, PlayerInLobbyInterface, LobbyInterface } from "
         startGame - callback
 */
 
-function LobbyUI({messages, players, lobbyData, startGame}:
+function LobbyUI({messages, players, lobbyData, startGame, appendMessage}:
     {
         messages: Array<PlayerMessageInterface>,
         players: Array<PlayerInLobbyInterface>,
         lobbyData: LobbyInterface,
-        startGame: Function
+        startGame: Function,
+        appendMessage:Function
     }) {
     console.debug('Lobby UI');
 
     const { playerData } = useContext(userContext);
 
     return (
-        <div>Lobby</div>
+        <div>
+            Lobby
+            <ChatBox messagesData={messages} appendMessage={appendMessage}/>
+        </div>
     );
 }
 
