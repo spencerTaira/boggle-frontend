@@ -34,8 +34,9 @@ function ChatBox(
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-
-        appendMessage({playerName, message:formData.message})
+        //TODO: playerName not showing in messageData, possibly context??
+        const newMessage = {playerName:playerName, message:formData.message}
+        appendMessage(newMessage)
         setFormData(()=>({message:''}))
     }
     // messagesData.map((msgData, idx:number)=>
