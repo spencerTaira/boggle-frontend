@@ -3,11 +3,11 @@ import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import './App.css';
 import Nav from "./Nav";
 import Intro from "./components/intro/Intro";
-import Lobby from "./components/lobby/Lobby";
+import LobbyAuth from './LobbyAuth';
 import Game from "./components/game/Game";
 import userContext from './userContext';
 import BoggleApi from './api';
-import EnterPlayerNameForm from './components/intro/EnterPlayerNameForm';
+import EnterPlayerNameForm from './EnterPlayerNameForm';
 import { PlayerDataInterface } from './interfaces';
 
 const defaultPlayerData = {
@@ -83,7 +83,7 @@ function App() {
             ? <EnterPlayerNameForm />
             : <Routes>
                 <Route path="/" element={<Intro />} />
-                <Route path="/lobby/:id" element={<Lobby />} />
+                <Route path="/lobby/:id" element={<LobbyAuth />} />
                 <Route path="/game/:id" element={<Game />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
