@@ -13,13 +13,15 @@ function Nav() {
 
     return (
         <nav className="Nav">
-           <Link to={"/"}>
-                Home
-            </Link>
-            <button onClick={clearStorage}>
-                Clear
-            </button>
-            <p>{playerData.playerName}</p>
+                <Link to={"/"}>
+                    Home
+                </Link>
+                <button onClick={clearStorage}>
+                    Clear
+                </button>
+                <Link to={"/"}>
+                    {playerData.playerName}
+                </Link>
         </nav>
     )
 }
