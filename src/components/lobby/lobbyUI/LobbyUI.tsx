@@ -45,8 +45,8 @@ function LobbyUI({messages, players, lobbyData, startGame, appendMessage}:
 
     return (
         <div>
-            Lobby
-            <ChatBox messagesData={messages} appendMessage={appendMessage}/>
+            Lobby UI
+            {/* <ChatBox messagesData={messages} appendMessage={appendMessage}/> */}
         </div>
     );
 }
