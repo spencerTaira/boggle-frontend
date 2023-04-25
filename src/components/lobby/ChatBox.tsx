@@ -6,7 +6,7 @@ import userContext from "../../userContext";
 
 function ChatBox(
     {
-        messagesData, 
+        messagesData,
         appendMessage
     }
     :
@@ -15,7 +15,8 @@ function ChatBox(
         appendMessage:Function
     })
 {
-
+    console.debug('Entered ChatBox');
+    
     const { playerName } = useContext(userContext)
     const [formData, setFormData] = useState(
         {
@@ -50,8 +51,8 @@ function ChatBox(
                 )}
             </div>
             <form onSubmit={handleSubmit}>
-                <input 
-                    type="text" 
+                <input
+                    type="text"
                     className="ChatBox-text-input"
                     value={formData.message}
                     name="message"
