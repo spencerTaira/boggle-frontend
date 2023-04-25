@@ -4,6 +4,8 @@ import BoggleApi from "../../api";
 import userContext from "../../userContext";
 
 function EnterPasswordForm({id}:{id:string}){
+    console.debug('Enter Password');
+    
     const {playerData, updatePlayerData} = useContext(userContext);
     const [formData, setFormData] = useState(
         {
