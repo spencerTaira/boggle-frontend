@@ -7,7 +7,6 @@ import LobbyUI from "./lobbyUI/LobbyUI";
 import GameUI from "./gameUI/GameUI";
 import { socketLobby } from "../../socket";
 import { PlayerMessageInterface, PlayerInLobbyInterface } from "../../interfaces";
-import { v4 as uuid } from 'uuid'
 
 /**
  * Renders top level Lobby component which houses both lobby/game UIs
@@ -42,9 +41,6 @@ import { v4 as uuid } from 'uuid'
 function Lobby() {
     console.debug('Entered Lobby Component');
 
-    const [lobbyId, setLobbyId] = useState(uuid());
-    console.log('UUID', lobbyId);
-    // UUID fd188db9-2e82-46b5-a9c0-15300a41875a
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
     const { playerData } = useContext(userContext);
@@ -93,17 +89,14 @@ function Lobby() {
             socketLobby.emit("joining", playerData);
         }
 
-        if (playerData.currLobby === id) {
-            console.log('Running CheckAndJoinLobby');
-            checkAndJoinLobby();
-        }
+        checkAndJoinLobby();
 
         //We should never see our own leaving message
         socketLobby.on('message', appendMessage);
         socketLobby.on('update_players', updatePlayers);
 
         return () => {
-            console.debug('Unmount playerData', playerData);
+            console.debug('Cleanup', playerData);
             if (playerData.currLobby !== '') {
                 socketLobby.emit('leave', playerData);
             }
@@ -111,27 +104,6 @@ function Lobby() {
             socketLobby.off('update_players', updatePlayers);
         };
     }, [id, navigate, playerData]);
-
-    // useEffect(() => {
-    //     console.debug('Empty Dep Use Effect');
-
-    //     //We should never see our own leaving message
-    //     socketLobby.on('message', appendMessage);
-    //     socketLobby.on('update_players', updatePlayers);
-
-    //     return () => {
-    //         console.debug('Unmount playerData', playerData);
-    //         socketLobby.emit('leave', playerData);
-    //         socketLobby.off('message', appendMessage);
-    //         socketLobby.off('update_players', updatePlayers);
-    //     };
-    // }, []);
-
-    if (playerData.currLobby !== id) {
-        return (
-            <EnterPasswordForm id={id!} />
-        );
-    }
 
     return (
         <div className="Lobby">
