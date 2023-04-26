@@ -1,0 +1,4 @@
+.Lobby{
+    display: flex;
+    flex-direction: column;
+}

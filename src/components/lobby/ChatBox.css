@@ -1,0 +1,19 @@
+.ChatBox{
+    width:40vw;
+    height:80vh;
+    border: 2px solid black;
+}
+
+.ChatBox-messages{
+    width: inherit;
+    font-size: 10px;
+    border: 2px dotted green;
+    height:inherit;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.ChatBox-messages p{
+    margin: 1px auto;
+}

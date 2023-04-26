@@ -43,10 +43,14 @@ function LobbyUI({messages, players, lobbyData, startGame, appendMessage}:
 
     const { playerData } = useContext(userContext);
 
+    function setStartGame(){
+        startGame(true);
+    }
+
     return (
         <div>
             Lobby UI
-            <ChatBox messagesData={messages} appendMessage={appendMessage}/>
+            <button onClick={setStartGame}>Start</button>
         </div>
     );
 }

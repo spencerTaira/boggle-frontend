@@ -5,9 +5,15 @@ import userContext from "../../../userContext";
 import ChatBox from "../ChatBox";
 import { socket, socketLobby } from "../../../socket";
 
-function GameUI() {
+function GameUI({gameState}:{gameState:Function}) {
+    function endGame(){
+        gameState(false)
+    }
+    
     return (
-        <div>GAMEMEMEM</div>
+        <div>GAMEMEMEM
+            <button onClick={endGame}>Start</button>
+        </div>
     );
 }
 

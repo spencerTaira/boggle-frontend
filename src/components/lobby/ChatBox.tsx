@@ -4,15 +4,17 @@ import { useState, useContext } from "react";
 import { PlayerMessageInterface } from "../../interfaces";
 import userContext from "../../userContext";
 
+import './ChatBox.css'
+
 function ChatBox(
     {
         messagesData,
-        appendMessage
+        // appendMessage
     }
     :
     {
         messagesData:Array<PlayerMessageInterface>,
-        appendMessage:Function
+        // appendMessage:Function
     })
 {
     console.debug('Entered ChatBox');
@@ -45,7 +47,7 @@ function ChatBox(
         socketLobby.emit("chat", newMessage, currLobby);
         setFormData(()=>({message:''}));
     }
-  
+    
     return (
         <div className="ChatBox">
             <div className="ChatBox-messages">
@@ -53,7 +55,9 @@ function ChatBox(
                     (msg, idx)=><p key={idx}>{msg.playerName}: {msg.message}</p>
                 )}
             </div>
-            <form onSubmit={handleSubmit}>
+            <form 
+                className="ChatBox-message-form"
+                onSubmit={handleSubmit}>
                 <input
                     type="text"
                     className="ChatBox-text-input"

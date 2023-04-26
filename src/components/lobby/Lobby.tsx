@@ -5,8 +5,11 @@ import userContext from "../../userContext";
 import EnterPasswordForm from "./EnterPasswordForm";
 import LobbyUI from "./lobbyUI/LobbyUI";
 import GameUI from "./gameUI/GameUI";
+import ChatBox from "./ChatBox";
 import { socketLobby } from "../../socket";
 import { PlayerMessageInterface, PlayerInLobbyInterface } from "../../interfaces";
+
+import './Lobby.css';
 
 /**
  * Renders top level Lobby component which houses both lobby/game UIs
@@ -116,8 +119,15 @@ function Lobby() {
                         startGame={setGameStart}
                         appendMessage={appendMessage}
                     />
-                    : <GameUI />
+                    : <GameUI 
+                        gameState = {setGameStart}
+                    />
             }
+            <ChatBox messagesData={playerMessages} />
+            {/* <div className="Lobby-current-players">
+                Current players
+                {players.map(player=><p>{player.playerName}</p>)}
+            </div> */}
         </div>
     );
 }
