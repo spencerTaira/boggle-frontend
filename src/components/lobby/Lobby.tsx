@@ -2,7 +2,6 @@ import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import BoggleAPI from "../../api";
 import userContext from "../../userContext";
-import EnterPasswordForm from "./EnterPasswordForm";
 import LobbyUI from "./lobbyUI/LobbyUI";
 import GameUI from "./gameUI/GameUI";
 import ChatBox from "./ChatBox";
@@ -119,7 +118,7 @@ function Lobby() {
                         startGame={setGameStart}
                         appendMessage={appendMessage}
                     />
-                    : <GameUI 
+                    : <GameUI
                         gameState = {setGameStart}
                     />
             }

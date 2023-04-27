@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useContext, useMemo } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import BoggleAPI from "../../../api";
-import userContext from "../../../userContext";
-import ChatBox from "../ChatBox";
-import { socket, socketLobby } from "../../../socket";
+// import { useContext } from "react";
+// import { useParams, useNavigate } from "react-router-dom";
+// import BoggleAPI from "../../../api";
+// import userContext from "../../../userContext";
+// import ChatBox from "../ChatBox";
+// import { socket, socketLobby } from "../../../socket";
 import { PlayerMessageInterface, PlayerInLobbyInterface, LobbyInterface } from "../../../interfaces";
 
 /*
@@ -41,7 +41,7 @@ function LobbyUI({messages, players, lobbyData, startGame, appendMessage}:
     }) {
     console.debug('Lobby UI');
 
-    const { playerData } = useContext(userContext);
+    // const { playerData } = useContext(userContext);
 
     function setStartGame(){
         startGame(true);
