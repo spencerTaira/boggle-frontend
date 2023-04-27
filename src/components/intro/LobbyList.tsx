@@ -13,7 +13,7 @@ function LobbyList(){
             socketIntro.emit('intro_get_lobbys');
         }
 
-        const intervalId = setInterval(getLobbys, 2000);
+        const intervalId = setInterval(getLobbys, 5000);
 
         socketIntro.on('intro-send-lobbys', updateLobbys);
 
@@ -45,8 +45,8 @@ function LobbyList(){
         <div className="LobbyList">
         {lobbys.map((lobbyData:IntroLobbyInterface)=> <LobbyCard key={lobbyData.lobby_name} lobbyData={lobbyData}/>)}
         </div>
-    )   
-   
+    )
+
 }
 
 export default LobbyList;
