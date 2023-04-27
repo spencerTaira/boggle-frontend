@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client';
-import { URL } from './config';
+import URL from './config';
 
 export const socket = io(URL);
 export const socketIntro = io(`${URL}/intro`);
