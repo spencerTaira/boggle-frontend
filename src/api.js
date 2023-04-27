@@ -1,6 +1,7 @@
 import axios from "axios";
+import URL from './config';
 
-const BASE_API_URL = "http://localhost:5000";
+const BASE_API_URL = URL;
 
 class BoggleApi {
 
