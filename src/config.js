@@ -1,1 +1,3 @@
-export const URL = 'https://boggle-your-brain.onrender.com'
+const URL = 'https://boggle-your-brain.onrender.com';
+
+export default URL;
