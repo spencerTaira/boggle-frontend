@@ -1,12 +1,12 @@
 import React, { useState, useContext } from "react";
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import BoggleApi from "../../api";
 import userContext from "../../userContext";
 
 function EnterPasswordForm({id}:{id:string}){
     console.debug('Enter Password');
-    
-    const {playerData, updatePlayerData} = useContext(userContext);
+
+    const { updatePlayerData} = useContext(userContext);
     const [formData, setFormData] = useState(
         {
             lobbyName:id,

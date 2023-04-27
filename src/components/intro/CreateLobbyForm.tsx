@@ -1,5 +1,5 @@
-import React, { ReactEventHandler, useState, useContext } from "react";
-import { useNavigate, Link } from 'react-router-dom';
+import React, {  useState, useContext } from "react";
+import { useNavigate } from 'react-router-dom';
 import BoggleApi from "../../api";
 import userContext from "../../userContext";
 
@@ -23,7 +23,7 @@ import userContext from "../../userContext";
 function CreateLobbyForm({cancel}:{cancel:Function}) {
     console.debug("Entered CreateLobbyForm");
 
-    const {playerData, updatePlayerData } = useContext(userContext);
+    const { updatePlayerData } = useContext(userContext);
     const [formData, setFormData] = useState(
         {
             lobbyName: '',
