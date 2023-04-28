@@ -9,6 +9,7 @@ import userContext from './userContext';
 import BoggleApi from './api';
 import EnterPlayerNameForm from './EnterPlayerNameForm';
 import { PlayerDataInterface } from './interfaces';
+import { socket } from "./socket";
 
 const defaultPlayerData = {
   playerId: 0,
@@ -54,6 +55,12 @@ function App() {
       }
     }
     getPlayerData();
+
+    socket.on('test', (msg) =>  console.log('THIS IS A TEST MESSAGE: ', msg))
+
+    return () => {
+      socket.off('test');
+    };
   }, [playerId, sessionPlayerData]);
 
 
