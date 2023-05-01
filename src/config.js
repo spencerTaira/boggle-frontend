@@ -1,3 +1,3 @@
-const URL = 'https://boggle-your-brain.onrender.com';
+const URL = process.env.URL || 'http://localhost:5000';
 
 export default URL;
