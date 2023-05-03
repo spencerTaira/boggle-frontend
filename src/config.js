@@ -1,3 +1,3 @@
-const URL = process.env.URL || 'http://localhost:8000';
+const URL = process.env.backendURL || 'http://localhost:8000';
 
 export default URL;
