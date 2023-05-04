@@ -85,17 +85,27 @@ function Lobby() {
                 navigate('/', { state: { error: result.error } });
             }
 
-            console.log('WHEN DID THIS HAPPEN????');
             setLobbyData(() => result.lobby);
-
             socketLobby.emit("joining", playerData);
         }
 
         checkAndJoinLobby();
 
+        // function testReconnect() {
+        //     console.log('recovered?', socketLobby.recovered);
+        // }
+
         //We should never see our own leaving message
         socketLobby.on('message', appendMessage);
         socketLobby.on('update_players', updatePlayers);
+        // socketLobby.on('connect', testReconnect)
+
+        setTimeout(() => {
+            if (socketLobby.io.engine) {
+              // close the low-level connection and trigger a reconnection
+              socketLobby.io.engine.close();
+            }
+        }, 10000);
 
         return () => {
             console.debug('Cleanup', playerData);
