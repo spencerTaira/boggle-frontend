@@ -77,6 +77,10 @@ function Lobby() {
 
     useEffect(() => {
         console.debug('Lobby Use Effect Running');
+
+        
+       
+
         async function checkAndJoinLobby() {
             const result = await BoggleAPI.joinLobby({ lobbyName: id, playerId: playerData.playerId });
 
@@ -86,26 +90,32 @@ function Lobby() {
             }
 
             setLobbyData(() => result.lobby);
-            socketLobby.emit("joining", playerData);
+            socketLobby.connect()
         }
 
         checkAndJoinLobby();
 
-        // function testReconnect() {
-        //     console.log('recovered?', socketLobby.recovered);
-        // }
 
         //We should never see our own leaving message
         socketLobby.on('message', appendMessage);
         socketLobby.on('update_players', updatePlayers);
+        socketLobby.on('connected', () => socketLobby.emit('player_data', playerData));
+        socketLobby.on('joined', () => {
+            console.log("We have joined!")
+            socketLobby.emit("chat", {
+                playerName:playerData.playerName,
+                message:`****joined the lobby!****`
+            },
+            id
+        )});
         // socketLobby.on('connect', testReconnect)
 
-        setTimeout(() => {
-            if (socketLobby.io.engine) {
-              // close the low-level connection and trigger a reconnection
-              socketLobby.io.engine.close();
-            }
-        }, 10000);
+        // setTimeout(() => {
+        //     if (socketLobby.io.engine) {
+        //       // close the low-level connection and trigger a reconnection
+        //       socketLobby.io.engine.close();
+        //     }
+        // }, 10000);
 
         return () => {
             console.debug('Cleanup', playerData);
@@ -114,6 +124,8 @@ function Lobby() {
             }
             socketLobby.off('message', appendMessage);
             socketLobby.off('update_players', updatePlayers);
+            socketLobby.off('player_data')
+            socketLobby.disconnect();
         };
     }, [id, navigate, playerData]);
 
@@ -129,7 +141,7 @@ function Lobby() {
                         appendMessage={appendMessage}
                     />
                     : <GameUI
-                        gameState = {setGameStart}
+                        gameState={setGameStart}
                     />
             }
             <ChatBox messagesData={playerMessages} />

@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from 'react-router-dom';
 import CreateLobbyForm from "./CreateLobbyForm";
 import JoinLobbyForm from "./JoinLobbyForm";
 import './Intro.css'
 import LobbyList from "./LobbyList";
+import { socketIntro } from "../../socket";
 /**
  * Render Intro Component
  *
@@ -31,6 +32,16 @@ function Intro() {
         }
     );
     
+    useEffect(function turnOnSocket(){
+        socketIntro.connect()
+
+        return ()=>{
+            console.info("closing socketIntro")
+            socketIntro.disconnect()
+        }
+
+    }, []);
+
     const location = useLocation();
 
     // able to access information that was sent along with the navigate from the prior location
