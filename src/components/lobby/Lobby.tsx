@@ -76,10 +76,7 @@ function Lobby() {
     }
 
     useEffect(() => {
-        console.debug('Lobby Use Effect Running');
-
-        
-       
+        console.debug('Lobby Use Effect Running');     
 
         async function checkAndJoinLobby() {
             const result = await BoggleAPI.joinLobby({ lobbyName: id, playerId: playerData.playerId });
@@ -93,13 +90,10 @@ function Lobby() {
             socketLobby.connect()
         }
 
-        checkAndJoinLobby();
-
-
         //We should never see our own leaving message
+        socketLobby.on('is_connected', () => socketLobby.emit('player_data', playerData));
         socketLobby.on('message', appendMessage);
         socketLobby.on('update_players', updatePlayers);
-        socketLobby.on('connected', () => socketLobby.emit('player_data', playerData));
         socketLobby.on('joined', () => {
             console.log("We have joined!")
             socketLobby.emit("chat", {
@@ -107,8 +101,10 @@ function Lobby() {
                 message:`****joined the lobby!****`
             },
             id
-        )});
-        // socketLobby.on('connect', testReconnect)
+            )
+        });
+        
+        checkAndJoinLobby();
 
         // setTimeout(() => {
         //     if (socketLobby.io.engine) {
@@ -119,12 +115,10 @@ function Lobby() {
 
         return () => {
             console.debug('Cleanup', playerData);
-            if (playerData.currLobby !== '') {
-                socketLobby.emit('leave', playerData);
-            }
+            socketLobby.off('is_connected');
             socketLobby.off('message', appendMessage);
             socketLobby.off('update_players', updatePlayers);
-            socketLobby.off('player_data')
+            socketLobby.off('joined')
             socketLobby.disconnect();
         };
     }, [id, navigate, playerData]);
@@ -144,7 +138,7 @@ function Lobby() {
                         gameState={setGameStart}
                     />
             }
-            <ChatBox messagesData={playerMessages} />
+            <ChatBox messagesData={playerMessages} socketLobby={socketLobby} />
             {/* <div className="Lobby-current-players">
                 Current players
                 {players.map(player=><p>{player.playerName}</p>)}

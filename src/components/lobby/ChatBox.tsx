@@ -1,19 +1,21 @@
-import { socketLobby } from "../../socket";
+// import { socketLobby } from "../../socket";
 import { useState, useContext } from "react";
 
 import { PlayerMessageInterface } from "../../interfaces";
 import userContext from "../../userContext";
 
 import './ChatBox.css'
+import { Socket } from "socket.io-client";
 
 function ChatBox(
     {
-        messagesData,
+        messagesData, socketLobby
         // appendMessage
     }
     :
     {
         messagesData:Array<PlayerMessageInterface>,
+        socketLobby:Socket
         // appendMessage:Function
     })
 {
