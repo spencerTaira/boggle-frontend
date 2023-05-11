@@ -98,11 +98,11 @@ function Lobby() {
         });
         socketLobby.on('message', appendMessage);
         socketLobby.on('update_players', updatePlayers);
-        socketLobby.on('joined', () => {
+        socketLobby.on('joined', (msg) => {
             console.log("We have joined!")
             socketLobby.emit("chat", {
                 playerName:playerData.playerName,
-                message:`****joined the lobby!****`
+                message:msg
             },
             id
             )
