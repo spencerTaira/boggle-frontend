@@ -58,8 +58,8 @@ function Lobby() {
     const [players, setPlayers] = useState<Array<PlayerInLobbyInterface>>([]);
     const [playerMessages, setPlayerMessages] = useState<Array<PlayerMessageInterface>>([]);
     const [gameStart, setGameStart] = useState(false);
-    const [inLobby, setInLobby] = useState(false);
 
+    console.log("What is socketLobby", socketLobby)
     console.log("what is playerData in Lobby Component", playerData);
     console.log('What is lobby data?', lobbyData);
     console.table(players);
@@ -91,13 +91,12 @@ function Lobby() {
         }
 
         function emitPlayerData(){
-            socketLobby.emit('player_data', playerData, inLobby)
-            setInLobby(()=>true);
+            socketLobby.emit('player_data', playerData, socketLobby.recovered)
+            socketLobby.recovered=true;
         }
-
         //We should never see our own leaving message
         socketLobby.on('is_connected', emitPlayerData);
-        socketLobby.on('message', appendMessage);
+        socketLobby.on('chat_message', appendMessage);
         socketLobby.on('update_players', updatePlayers);
         socketLobby.on('joined', (msg) => {
             console.log("We have joined!")
@@ -114,12 +113,13 @@ function Lobby() {
         return () => {
             console.debug('Lobby Cleanup');
             socketLobby.off('is_connected');
-            socketLobby.off('message', appendMessage);
+            socketLobby.off('chat_message', appendMessage);
             socketLobby.off('update_players', updatePlayers);
             socketLobby.off('joined')
-            socketLobby.disconnect();
+            socketLobby.close();
+            socketLobby.recovered = false;
         };
-    }, [id, navigate, playerData, inLobby]);
+    }, [id, navigate, playerData]);
 
     return (
         <div className="Lobby">
