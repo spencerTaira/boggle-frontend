@@ -64,15 +64,14 @@ function Lobby() {
     console.log('What is lobby data?', lobbyData);
     console.table(players);
     console.table(playerMessages);
-
     function appendMessage(newMessage: PlayerMessageInterface) {
-        console.log('UPDATING MESSAGES');
+        // console.log('UPDATING MESSAGES');
         setPlayerMessages((prevMessages) => ([...prevMessages, newMessage]));
     }
 
     function updatePlayers(playersInLobby: Array<PlayerInLobbyInterface>) {
-        console.log('UPDATING PLAYERS');
-        console.log(playersInLobby);
+        // console.log('UPDATING PLAYERS');
+        // console.log(playersInLobby);
         setPlayers(() => playersInLobby);
     }
 
@@ -91,11 +90,13 @@ function Lobby() {
             socketLobby.connect();
         }
 
-        //We should never see our own leaving message
-        socketLobby.on('is_connected', () => {
+        function emitPlayerData(){
             socketLobby.emit('player_data', playerData, inLobby)
-            setInLobby(true);
-        });
+            setInLobby(()=>true);
+        }
+
+        //We should never see our own leaving message
+        socketLobby.on('is_connected', emitPlayerData);
         socketLobby.on('message', appendMessage);
         socketLobby.on('update_players', updatePlayers);
         socketLobby.on('joined', (msg) => {
@@ -110,13 +111,6 @@ function Lobby() {
         
         checkAndJoinLobby();
 
-        // setTimeout(() => {
-        //     if (socketLobby.io.engine) {
-        //       // close the low-level connection and trigger a reconnection
-        //       socketLobby.io.engine.close();
-        //     }
-        // }, 10000);
-
         return () => {
             console.debug('Lobby Cleanup');
             socketLobby.off('is_connected');
@@ -125,7 +119,7 @@ function Lobby() {
             socketLobby.off('joined')
             socketLobby.disconnect();
         };
-    }, [id, navigate, playerData]);
+    }, [id, navigate, playerData, inLobby]);
 
     return (
         <div className="Lobby">
