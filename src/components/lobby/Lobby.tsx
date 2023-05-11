@@ -58,6 +58,7 @@ function Lobby() {
     const [players, setPlayers] = useState<Array<PlayerInLobbyInterface>>([]);
     const [playerMessages, setPlayerMessages] = useState<Array<PlayerMessageInterface>>([]);
     const [gameStart, setGameStart] = useState(false);
+    const [inLobby, setInLobby] = useState(false);
 
     console.log("what is playerData in Lobby Component", playerData);
     console.log('What is lobby data?', lobbyData);
@@ -87,11 +88,14 @@ function Lobby() {
             }
 
             setLobbyData(() => result.lobby);
-            socketLobby.connect()
+            socketLobby.connect();
         }
 
         //We should never see our own leaving message
-        socketLobby.on('is_connected', () => socketLobby.emit('player_data', playerData));
+        socketLobby.on('is_connected', () => {
+            socketLobby.emit('player_data', playerData, inLobby)
+            setInLobby(true);
+        });
         socketLobby.on('message', appendMessage);
         socketLobby.on('update_players', updatePlayers);
         socketLobby.on('joined', () => {
@@ -114,7 +118,7 @@ function Lobby() {
         // }, 10000);
 
         return () => {
-            console.debug('Cleanup', playerData);
+            console.debug('Lobby Cleanup');
             socketLobby.off('is_connected');
             socketLobby.off('message', appendMessage);
             socketLobby.off('update_players', updatePlayers);
