@@ -76,7 +76,7 @@ function Lobby() {
     }
 
     useEffect(() => {
-        console.debug('Lobby Use Effect Running');     
+        console.debug('Lobby Use Effect Running');
 
         async function checkAndJoinLobby() {
             const result = await BoggleAPI.joinLobby({ lobbyName: id, playerId: playerData.playerId });
@@ -91,8 +91,7 @@ function Lobby() {
         }
 
         function emitPlayerData(){
-            socketLobby.emit('player_data', playerData, socketLobby.recovered)
-            socketLobby.recovered=true;
+            socketLobby.emit('player_data', playerData)
         }
         //We should never see our own leaving message
         socketLobby.on('is_connected', emitPlayerData);
@@ -107,7 +106,7 @@ function Lobby() {
             id
             )
         });
-        
+
         checkAndJoinLobby();
 
         return () => {
