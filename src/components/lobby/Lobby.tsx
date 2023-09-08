@@ -87,6 +87,8 @@ function Lobby() {
             }
 
             setLobbyData(() => result.lobby);
+            const playerId = localStorage.getItem('playerId');
+            socketLobby.io.opts.query = {'player_id':playerId}
             socketLobby.connect();
         }
 

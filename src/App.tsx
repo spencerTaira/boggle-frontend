@@ -56,11 +56,6 @@ function App() {
     }
     getPlayerData();
 
-    // socket.on('test', (msg) =>  console.log('THIS IS A TEST MESSAGE: ', msg))
-
-    // return () => {
-    //   socket.off('test');
-    // };
   }, [playerId, sessionPlayerData]);
 
 
