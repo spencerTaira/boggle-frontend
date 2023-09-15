@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from 'react-router-dom';
 import CreateLobbyForm from "./CreateLobbyForm";
 import JoinLobbyForm from "./JoinLobbyForm";
