@@ -105,7 +105,8 @@ function Lobby() {
                 playerName:playerData.playerName,
                 message:msg
             },
-            id
+            id,
+            false,
             )
         });
 
