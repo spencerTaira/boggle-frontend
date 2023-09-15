@@ -5,7 +5,7 @@
 // import ChatBox from "../ChatBox";
 // import { socket, socketLobby } from "../../../socket";
 import { PlayerMessageInterface, PlayerInLobbyInterface, LobbyInterface } from "../../../interfaces";
-
+import PlayerCards from "./PlayerCards";
 /*
     Renders LobbyUI component
 
@@ -49,8 +49,9 @@ function LobbyUI({messages, players, lobbyData, startGame, appendMessage}:
 
     return (
         <div>
-            Lobby UI
+            Players {players.length} / {lobbyData.max_players}
             <button onClick={setStartGame}>Start</button>
+            <PlayerCards players={players} maxPlayers={lobbyData.max_players}/>
         </div>
     );
 }
