@@ -9,6 +9,7 @@ import userContext from './userContext';
 import BoggleApi from './api';
 import EnterPlayerNameForm from './EnterPlayerNameForm';
 import { PlayerDataInterface } from './interfaces';
+
 // import { socket } from "./socket";
 
 const defaultPlayerData = {
@@ -30,6 +31,7 @@ function App() {
   console.debug("Entered app component");
 
   const playerId = localStorage.getItem("playerId")
+  // const navigate = useNavigate();
 
   let sessionPlayerData = sessionStorage.getItem("playerData")
   let sessionPlayerDataParsed: PlayerDataInterface = sessionPlayerData !== null
@@ -51,6 +53,10 @@ function App() {
         } else {
           setPlayerData(() => result.playerData);
           sessionStorage.setItem("playerData", JSON.stringify(result.playerData));
+
+          // if (result.playerData.currLobby) {
+          //   navigate(`/lobby/${result.playerData.currLobby}`)
+          // }
         }
       }
     }

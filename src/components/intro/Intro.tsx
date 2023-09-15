@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useLocation } from 'react-router-dom';
 import CreateLobbyForm from "./CreateLobbyForm";
 import JoinLobbyForm from "./JoinLobbyForm";
 import './Intro.css'
 import LobbyList from "./LobbyList";
 import { socketIntro } from "../../socket";
+
 /**
  * Render Intro Component
  *
@@ -31,7 +32,7 @@ function Intro() {
             greyOverlay: false
         }
     );
-    
+
     useEffect(function turnOnSocket(){
         socketIntro.connect()
 
