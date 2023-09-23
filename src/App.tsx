@@ -90,9 +90,9 @@ function App() {
           !playerData.playerName
             ? <EnterPlayerNameForm />
             : <Routes>
-                <Route path="/" element={<Intro />} />
                 <Route path="/lobby/:id" element={<LobbyAuth />} />
                 <Route path="/game/:id" element={<Game />} />
+                <Route path="/" element={<Intro />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
           }
