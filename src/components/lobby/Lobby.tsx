@@ -79,14 +79,6 @@ function Lobby() {
         console.debug('Lobby Use Effect Running');
 
         async function checkAndJoinLobby() {
-            const result = await BoggleAPI.joinLobby({ lobbyName: id, playerId: playerData.playerId });
-
-            if (result.error) {
-                // able to send information along with navigate and access at the final destination
-                navigate('/', { state: { error: result.error } });
-            }
-
-            setLobbyData(() => result.lobby);
             const playerId = localStorage.getItem('playerId');
             socketLobby.io.opts.query = {'player_id':playerId}
             socketLobby.connect();
@@ -95,6 +87,7 @@ function Lobby() {
         function emitPlayerData(){
             socketLobby.emit('player_data', playerData)
         }
+
         //We should never see our own leaving message
         socketLobby.on('is_connected', emitPlayerData);
         socketLobby.on('chat_message', appendMessage);
@@ -110,6 +103,14 @@ function Lobby() {
             )
         });
 
+        socketLobby.on('error', (data) => {
+            navigate('/', { state: { error: data.msg } })
+        })
+
+        socketLobby.on('lobby_information', (lobby) => {
+            setLobbyData(() => lobby);
+        })
+
         checkAndJoinLobby();
 
         return () => {
@@ -118,6 +119,8 @@ function Lobby() {
             socketLobby.off('chat_message', appendMessage);
             socketLobby.off('update_players', updatePlayers);
             socketLobby.off('joined')
+            socketLobby.off('error')
+            socketLobby.off('lobby_information')
             socketLobby.close();
             socketLobby.recovered = false;
         };
