@@ -5,24 +5,26 @@ const BASE_API_URL = URL;
 
 class BoggleApi {
 
-   // static async checkLobby(lobbyId) {
-   //    try {
-   //       const result = await axios(
-   //          {
-   //             method: "get",
-   //             url: `${BASE_API_URL}/lobby`,
-   //             params: lobbyId
-   //          }
-   //       )
+   static async checkLobby(lobbyName) {
+      console.log("what is lobbyId", lobbyName)
+      try {
+         const result = await axios(
+            {
+               method: "get",
+               url: `${BASE_API_URL}/lobby`,
+               params: {lobbyName}
+            }
+         )
 
-   //       return result.data;
-   //    } catch (e) {
-   //       return {
-   //          error: e.response.data.error,
-   //          status: e.response.status
-   //       }
-   //    }
-   // }
+         return result.data;
+      } catch (e) {
+         console.log("what is da e?", e)
+         return {
+            error: e.response.data.error,
+            status: e.response.status
+         }
+      }
+   }
 
    static async createLobby(lobbyData) {
 
