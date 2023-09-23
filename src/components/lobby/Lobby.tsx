@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import BoggleAPI from "../../api";
 import userContext from "../../userContext";
 import LobbyUI from "./lobbyUI/LobbyUI";
 import GameUI from "./gameUI/GameUI";
