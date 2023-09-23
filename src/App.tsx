@@ -87,15 +87,19 @@ function App() {
         <BrowserRouter>
           <Nav />
           {
-          !playerData.playerName
-            ? <EnterPlayerNameForm />
-            : <Routes>
+            !playerData.playerName
+              ? 
+              <Routes>
+                <Route path="/" element={<EnterPlayerNameForm />} />
+              </Routes>
+              : 
+              <Routes>
                 <Route path="/lobby/:id" element={<LobbyAuth />} />
                 <Route path="/game/:id" element={<Game />} />
                 <Route path="/" element={<Intro />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
-          }
+            }
         </BrowserRouter>
       </div>
     </userContext.Provider>
