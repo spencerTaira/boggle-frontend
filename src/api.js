@@ -163,6 +163,41 @@ class BoggleApi {
       }
    }
 
+   static async gameStart(lobbyId) {
+      try {
+         const result = await axios(
+            {
+               method: "post",
+               url: `${BASE_API_URL}/lobby/gameStart`,
+               data: {
+                  lobbyName: lobbyId
+               }
+            }
+         )
+
+         return result.data;
+      } catch (e) {
+         throw new Error(e)
+      }
+   }
+
+   static async getBoard(lobbyId) {
+      try {
+         const result = await axios(
+            {
+               method: "get",
+               url: `${BASE_API_URL}/lobby/board`,
+               params: {
+                  lobbyName: lobbyId
+               }
+            }
+         )
+
+         return result.data;
+      } catch (e) {
+         throw new Error(e)
+      }
+   }
    static async ping() {
       try {
          const result = await axios(

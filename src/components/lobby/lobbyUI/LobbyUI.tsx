@@ -44,7 +44,7 @@ function LobbyUI({messages, players, lobbyData, startGame, appendMessage}:
     // const { playerData } = useContext(userContext);
 
     function setStartGame(){
-        startGame(true);
+        startGame();
     }
 
     return (

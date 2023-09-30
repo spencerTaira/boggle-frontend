@@ -76,6 +76,14 @@ function Lobby() {
         setPlayers(() => playersInLobby);
     }
 
+    async function startGame() {
+        const result = await BoggleApi.gameStart(lobbyData.lobby_name);
+
+        if (result.success) {
+            socketLobby.emit('gameStart', lobbyData.lobby_name);
+        }
+    }
+
     useEffect(() => {
         console.debug('Lobby Use Effect Running');
 
@@ -103,14 +111,15 @@ function Lobby() {
             false,
             )
         });
+        socketLobby.on('startGame', () => setGameStart(() => true));
 
         socketLobby.on('error', (data) => {
             navigate('/', { state: { error: data.msg } })
-        })
+        });
 
         socketLobby.on('lobby_information', (lobby) => {
             setLobbyData(() => lobby);
-        })
+        });
 
         checkAndJoinLobby();
         const intervalID = setInterval(BoggleApi.ping, 840000); //14 minutes
@@ -120,9 +129,10 @@ function Lobby() {
             socketLobby.off('is_connected');
             socketLobby.off('chat_message', appendMessage);
             socketLobby.off('update_players', updatePlayers);
-            socketLobby.off('joined')
-            socketLobby.off('error')
-            socketLobby.off('lobby_information')
+            socketLobby.off('joined');
+            socketLobby.off('error');
+            socketLobby.off('lobby_information');
+            socketLobby.off('startGame');
             socketLobby.close();
             socketLobby.recovered = false;
             clearInterval(intervalID);
@@ -137,11 +147,11 @@ function Lobby() {
                         messages={playerMessages}
                         players={players}
                         lobbyData={lobbyData}
-                        startGame={setGameStart}
+                        startGame={startGame}
                         appendMessage={appendMessage}
                     />
                     : <GameUI
-                        gameState={setGameStart}
+                        gameState={setGameStart} lobbyId={lobbyData.lobby_name}
                     />
             }
             <ChatBox messagesData={playerMessages} socketLobby={socketLobby} />
