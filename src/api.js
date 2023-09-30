@@ -162,6 +162,21 @@ class BoggleApi {
          }
       }
    }
+
+   static async ping() {
+      try {
+         const result = await axios(
+            {
+               method: "get",
+               url: `${BASE_API_URL}/ping-pong`,
+            }
+         )
+
+         return result.data;
+      } catch (e) {
+         throw new Error(e)
+      }
+   }
 }
 
 export default BoggleApi;

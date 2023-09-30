@@ -6,6 +6,7 @@ import GameUI from "./gameUI/GameUI";
 import ChatBox from "./ChatBox";
 import { socketLobby } from "../../socket";
 import { PlayerMessageInterface, PlayerInLobbyInterface } from "../../interfaces";
+import BoggleApi from "../../api";
 
 import './Lobby.css';
 
@@ -64,7 +65,8 @@ function Lobby() {
     console.table(players);
     console.table(playerMessages);
     function appendMessage(newMessage: PlayerMessageInterface) {
-        // console.log('UPDATING MESSAGES');
+        const date = new Date();
+        console.log(date);
         setPlayerMessages((prevMessages) => ([...prevMessages, newMessage]));
     }
 
@@ -111,6 +113,7 @@ function Lobby() {
         })
 
         checkAndJoinLobby();
+        const intervalID = setInterval(BoggleApi.ping, 840000); //14 minutes
 
         return () => {
             console.debug('Lobby Cleanup');
@@ -122,6 +125,7 @@ function Lobby() {
             socketLobby.off('lobby_information')
             socketLobby.close();
             socketLobby.recovered = false;
+            clearInterval(intervalID);
         };
     }, [id, navigate, playerData]);
 
