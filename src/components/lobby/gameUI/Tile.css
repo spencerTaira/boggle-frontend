@@ -1,9 +1,9 @@
 .Tile {
-    display: flex;
+  display: flex;
   width: 40px;
   height: 40px;
   border: 2px solid black;
   font-size: 1em;
-  align-items:center;
+  align-items: center;
   justify-content: center;
 }

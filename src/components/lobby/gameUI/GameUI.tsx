@@ -3,8 +3,9 @@ import React, { useEffect, useState } from "react";
 import BoggleApi from "../../../api";
 // import userContext from "../../../userContext";
 // import ChatBox from "../ChatBox";
-// import { socket, socketLobby } from "../../../socket";
+import { socketGame } from "../../../socket";
 import Board from './Board'
+import SubmissionForm from './SubmissionForm'
 
 
 function GameUI({gameState, lobbyId}:{gameState:Function, lobbyId: string}) {
@@ -26,10 +27,16 @@ function GameUI({gameState, lobbyId}:{gameState:Function, lobbyId: string}) {
         getBoard();
     }, [lobbyId, setGameboard]);
 
+
+    async function submitAndCheckWord(word:String){
+        console.log("submit word", word);
+    }
+
     return (
         <div className="Game">GAMEMEMEM
             <button onClick={endGame}>Start</button>
             <Board gameboard={gameboard}/>
+            <SubmissionForm submitWord={submitAndCheckWord}/>
         </div>
     );
 }
