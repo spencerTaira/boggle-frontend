@@ -1,13 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 // import { useParams, useNavigate } from "react-router-dom";
 import BoggleApi from "../../../api";
 // import userContext from "../../../userContext";
 // import ChatBox from "../ChatBox";
 // import { socket, socketLobby } from "../../../socket";
+import Board from './Board'
+
 
 function GameUI({gameState, lobbyId}:{gameState:Function, lobbyId: string}) {
     console.debug('GameUI');
 
+    const [gameboard, setGameboard] = useState(new Array(5).fill(new Array(5).fill('')))
     function endGame(){
         gameState(false)
     }
@@ -17,14 +20,16 @@ function GameUI({gameState, lobbyId}:{gameState:Function, lobbyId: string}) {
             const result = await BoggleApi.getBoard(lobbyId);
 
             console.log('This is game board:', result);
+            setGameboard(()=>result.gameBoard);
         }
 
         getBoard();
-    }, [lobbyId]);
+    }, [lobbyId, setGameboard]);
 
     return (
-        <div>GAMEMEMEM
+        <div className="Game">GAMEMEMEM
             <button onClick={endGame}>Start</button>
+            <Board gameboard={gameboard}/>
         </div>
     );
 }
